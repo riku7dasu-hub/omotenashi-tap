@@ -270,6 +270,7 @@
 <header>
   <h1>おもてなしタップ</h1>
   <p>ゲストが選ぶだけで、スタッフには日本語で伝わります</p>
+  <p id="facilityTag" style="font-size:14px; opacity:0.85; margin-top:6px;"></p>
 </header>
 
 <div class="lang-bar" id="langBar"></div>
@@ -305,6 +306,14 @@ const HOTEL_ID = "toyama-sample";
 // Apps ScriptをWebアプリとしてデプロイして発行されたURLをここに貼り付ける。
 // 空のままなら送信処理はスキップされ、今まで通りlocalStorageのみで動作する（後方互換）。
 const ANALYTICS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbw_qr1blXphGN6oY112-h9BE5dPaLuh34_rBaVRjIf_nKlcD-xcVqvNXILcjomDS64j/exec";
+
+// ---- 営業デモ用：施設名の表示（任意）----
+// 特定施設向けにデモを送る際、ここに施設名を入れるとヘッダーに表示される。空文字なら何も表示しない。
+const FACILITY_NAME = "";
+if (FACILITY_NAME) {
+  const facilityTagEl = document.getElementById("facilityTag");
+  if (facilityTagEl) facilityTagEl.textContent = FACILITY_NAME + " 様 ご提案用デモ画面";
+}
 
 function genSessionId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
@@ -640,7 +649,7 @@ const categories = [
   },
   {
     id: "stay",
-    icon: "🛏️",
+    icon: "📅",
     label: { en: "Stay / Room Change", zh: "住宿天數／房型變更", ko: "숙박·객실 변경" },
     steps: [
       { type: "choice", key: "kind",
