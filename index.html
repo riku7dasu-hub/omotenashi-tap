@@ -278,26 +278,26 @@
 
 <script>
 const T = {
-  chooseLang: { en: "Please choose your language", zh: "請選擇您的語言", ko: "언어를 선택해주세요" },
-  homeQuestion: { en: "How can we help?", zh: "需要什麼協助？", ko: "무엇을 도와드릴까요?" },
-  showStaff: { en: "Please show this screen to staff", zh: "請將此畫面出示給工作人員", ko: "이 화면을 직원에게 보여주세요" },
-  urgent: { en: "URGENT", zh: "緊急", ko: "긴급" },
-  notUrgent: { en: "Not urgent", zh: "不緊急", ko: "급하지 않음" },
-  isUrgent: { en: "Is this urgent?", zh: "這件事緊急嗎？", ko: "긴급한 사안인가요?" },
-  roomNumber: { en: "Your room number", zh: "您的房號", ko: "객실 번호" },
-  confirm: { en: "Confirm", zh: "確認", ko: "확인" },
-  backHome: { en: "Start over", zh: "重新開始", ko: "처음으로" },
-  backStep: { en: "Back", zh: "上一步", ko: "이전" },
-  howMany: { en: "How many?", zh: "需要幾個？", ko: "몇 개 필요하세요?" },
-  close: { en: "OK", zh: "了解", ko: "확인" },
-  askStaffNote: { en: "Staff will confirm details with you", zh: "詳細內容將由工作人員為您確認", ko: "자세한 내용은 직원이 안내해 드립니다" },
-  luggageAddressNote: { en: "Please show staff the address of your next destination (e.g. your next hotel's booking confirmation)", zh: "請向工作人員出示您下一個目的地的地址（例如下一間飯店的訂房確認）", ko: "다음 목적지 주소를 직원에게 보여주세요 (예: 다음 숙소의 예약 확인서 등)" },
-  peopleQuestion: { en: "Will the number of guests change?", zh: "入住人數是否會有變動？", ko: "투숙 인원이 변경되나요?" },
-  same: { en: "Same", zh: "不變", ko: "동일" },
-  more: { en: "More people", zh: "增加人數", ko: "인원 증가" },
-  fewer: { en: "Fewer people", zh: "減少人數", ko: "인원 감소" },
-  howManyPeople: { en: "How many people?", zh: "共幾位？", ko: "몇 명인가요?" },
-  arriveDate: { en: "Desired delivery date (Month/Day)", zh: "希望送達日期（月/日）", ko: "희망 배송일 (월/일)" }
+  chooseLang: { en: "Please choose your language", zh: "請選擇您的語言", ko: "언어를 선택해주세요", ja: "言語を選択してください" },
+  homeQuestion: { en: "How can we help?", zh: "需要什麼協助？", ko: "무엇을 도와드릴까요?", ja: "どのようなご用件でしょうか？" },
+  showStaff: { en: "Please show this screen to staff", zh: "請將此畫面出示給工作人員", ko: "이 화면을 직원에게 보여주세요", ja: "この画面をスタッフにお見せください" },
+  urgent: { en: "URGENT", zh: "緊急", ko: "긴급", ja: "至急" },
+  notUrgent: { en: "Not urgent", zh: "不緊急", ko: "급하지 않음", ja: "急ぎではない" },
+  isUrgent: { en: "Is this urgent?", zh: "這件事緊急嗎？", ko: "긴급한 사안인가요?", ja: "これは至急のご用件ですか？" },
+  roomNumber: { en: "Your room number", zh: "您的房號", ko: "객실 번호", ja: "お部屋番号" },
+  confirm: { en: "Confirm", zh: "確認", ko: "확인", ja: "確認" },
+  backHome: { en: "Start over", zh: "重新開始", ko: "처음으로", ja: "はじめから" },
+  backStep: { en: "Back", zh: "上一步", ko: "이전", ja: "戻る" },
+  howMany: { en: "How many?", zh: "需要幾個？", ko: "몇 개 필요하세요?", ja: "いくつ必要ですか？" },
+  close: { en: "OK", zh: "了解", ko: "확인", ja: "了解" },
+  askStaffNote: { en: "Staff will confirm details with you", zh: "詳細內容將由工作人員為您確認", ko: "자세한 내용은 직원이 안내해 드립니다", ja: "詳細はスタッフがご案内します" },
+  luggageAddressNote: { en: "Please show staff the address of your next destination (e.g. your next hotel's booking confirmation)", zh: "請向工作人員出示您下一個目的地的地址（例如下一間飯店的訂房確認）", ko: "다음 목적지 주소를 직원에게 보여주세요 (예: 다음 숙소의 예약 확인서 등)", ja: "次のご宿泊先の住所をスタッフにお見せください（例：次のホテルの予約確認書など）" },
+  peopleQuestion: { en: "Will the number of guests change?", zh: "入住人數是否會有變動？", ko: "투숙 인원이 변경되나요?", ja: "宿泊人数に変更はありますか？" },
+  same: { en: "Same", zh: "不變", ko: "동일", ja: "変更なし" },
+  more: { en: "More people", zh: "增加人數", ko: "인원 증가", ja: "人数が増える" },
+  fewer: { en: "Fewer people", zh: "減少人數", ko: "인원 감소", ja: "人数が減る" },
+  howManyPeople: { en: "How many people?", zh: "共幾位？", ko: "몇 명인가요?", ja: "何名になりますか？" },
+  arriveDate: { en: "Desired delivery date (Month/Day)", zh: "希望送達日期（月/日）", ko: "희망 배송일 (월/일)", ja: "希望送付日（月／日）" }
 };
 
 // ---- スプレッドシート連携（任意機能）----
@@ -348,40 +348,46 @@ const languages = [
   { code: "en", label: "English" },
   { code: "zh", label: "中文(繁體)" },
   { code: "ko", label: "한국어" },
+  { code: "ja", label: "日本語" },
 ];
 
 // ---- fixed multilingual explanation texts ----
 const airconExplain = {
   en: "We're sorry — this hotel uses central air conditioning, so the temperature can't be adjusted per room. We can lend you a fan or an extra blanket instead.",
   zh: "非常抱歉，本飯店採用中央空調系統，無法個別調整每間房間的溫度。我們可以為您提供電風扇或額外的毛毯。",
-  ko: "죄송합니다. 저희 호텔은 중앙 냉난방 시스템을 사용하여 객실별로 온도를 조절할 수 없습니다. 대신 선풍기나 여분의 담요를 빌려드릴 수 있습니다."
+  ko: "죄송합니다. 저희 호텔은 중앙 냉난방 시스템을 사용하여 객실별로 온도를 조절할 수 없습니다. 대신 선풍기나 여분의 담요를 빌려드릴 수 있습니다.",
+  ja: "申し訳ございません。当施設は中央管理の空調のため、お部屋ごとの温度調整ができません。代わりに扇風機や毛布をお貸しいたします。"
 };
-const borrowFanLabel = { en: "Borrow a fan / blanket", zh: "借用電風扇／毛毯", ko: "선풍기·담요 대여" };
+const borrowFanLabel = { en: "Borrow a fan / blanket", zh: "借用電風扇／毛毯", ko: "선풍기·담요 대여", ja: "扇風機・毛布の貸し出し" };
 
 // NOTE: 断定的な回答にすること（「スタッフに聞いてください」だと曖昧なリクエストを誘発するため）。
 // 導入設定シートの「ハラール対応」「持ち帰り可否」の記入内容に合わせて、施設ごとに実際の可否・条件で書き換えて運用してください。
 const halalExplain = {
   en: "Yes — halal-friendly dishes are available at breakfast every day (please look for the labeled items). If you have other food allergies, please tell our staff when you arrive at the dining hall.",
   zh: "可以，每日早餐均提供清真友善餐點（請留意有標示的餐點）。如有其他食物過敏，請於用餐時告知工作人員。",
-  ko: "네, 매일 조식에 할랄 친화적인 메뉴가 준비되어 있습니다 (표시된 메뉴를 확인해 주세요). 다른 식품 알레르기가 있으시면 식당에서 직원에게 알려주세요."
+  ko: "네, 매일 조식에 할랄 친화적인 메뉴가 준비되어 있습니다 (표시된 메뉴를 확인해 주세요). 다른 식품 알레르기가 있으시면 식당에서 직원에게 알려주세요.",
+  ja: "はい、朝食では毎日ハラール対応のお料理をご用意しております（表示のあるお料理をお選びください）。他にアレルギー等ございましたら、会場でスタッフにお申し付けください。"
 };
 const takeoutExplain = {
   en: "Yes, you may take your breakfast to your room. Please ask staff for a to-go container when you arrive at the dining hall (available from around 6:00–6:30).",
   zh: "可以，您可以將早餐帶回房間享用。請於用餐時向工作人員索取外帶容器（約6:00～6:30起提供）。",
-  ko: "네, 조식을 객실로 가져가실 수 있습니다. 식당에 도착하시면 직원에게 포장 용기를 요청해 주세요 (약 6:00~6:30부터 제공)."
+  ko: "네, 조식을 객실로 가져가실 수 있습니다. 식당에 도착하시면 직원에게 포장 용기를 요청해 주세요 (약 6:00~6:30부터 제공).",
+  ja: "はい、朝食はお部屋にお持ち帰りいただけます。会場にてスタッフに容器をお申し付けください（6:00〜6:30頃より提供）。"
 };
 // 例：観光ルートの時刻表や周辺施設の案内など、施設ごとの固定情報をここに設定します
 const localInfoExplain = {
   en: "(Example) Timetables and local information change by season. Please ask our staff for today's details.",
   zh: "（範例）路線時刻表及周邊資訊依季節而異，請向工作人員確認今日詳情。",
-  ko: "(예시) 시간표 및 주변 정보는 계절에 따라 다릅니다. 오늘의 자세한 내용은 직원에게 문의해 주세요."
+  ko: "(예시) 시간표 및 주변 정보는 계절에 따라 다릅니다. 오늘의 자세한 내용은 직원에게 문의해 주세요.",
+  ja: "（例）時刻表や周辺情報は季節により変わります。本日の詳細はスタッフにお尋ねください。"
 };
 
 // 締め出し（鍵を部屋に置いたまま外出）は選択肢を出さず、必ずスタッフが部屋まで同伴して解錠する前提の定型文にしている
 const lockedOutAnswerText = {
   en: "A member of staff will come to accompany you to your room shortly to let you in. Please wait near your room.",
   zh: "工作人員將盡快陪同您前往房間為您開門，請在房間附近稍候。",
-  ko: "직원이 곧 방까지 동행하여 문을 열어드리겠습니다. 방 근처에서 잠시 기다려 주세요."
+  ko: "직원이 곧 방까지 동행하여 문을 열어드리겠습니다. 방 근처에서 잠시 기다려 주세요.",
+  ja: "まもなくスタッフがお部屋までご案内し、鍵をお開けいたします。お部屋の近くで少々お待ちください。"
 };
 
 // 緊急対応（気分が悪い／怪我）は「病院の手配が必要か」で分岐し、不要な場合のみ絆創膏の要否を聞く。
@@ -389,26 +395,29 @@ const lockedOutAnswerText = {
 const emergencyHospitalText = {
   en: "Staff will arrange transportation to a hospital and come to assist you shortly. Please wait — someone is on their way.",
   zh: "工作人員將為您安排前往醫院的交通，並盡快前來協助您。請稍候，我們馬上到。",
-  ko: "직원이 병원 이동을 도와드리기 위해 곧 찾아뵙겠습니다. 잠시만 기다려 주세요."
+  ko: "직원이 병원 이동을 도와드리기 위해 곧 찾아뵙겠습니다. 잠시만 기다려 주세요.",
+  ja: "スタッフが病院までの移動を手配し、まもなく伺います。少々お待ちください。"
 };
 const emergencyBandaidText = {
   en: "We'll bring a band-aid to your room shortly.",
   zh: "我們會盡快將OK繃送到您的房間。",
-  ko: "곧 밴드(반창고)를 객실로 가져다 드리겠습니다."
+  ko: "곧 밴드(반창고)를 객실로 가져다 드리겠습니다.",
+  ja: "まもなく絆創膏をお部屋にお届けします。"
 };
 const emergencyNoneText = {
   en: "We hope you feel better soon. Please let us know if anything changes.",
   zh: "祝您早日康復。如有任何變化，請隨時告知我們。",
-  ko: "빨리 쾌차하시길 바랍니다. 상황이 바뀌면 언제든지 알려주세요."
+  ko: "빨리 쾌차하시길 바랍니다. 상황이 바뀌면 언제든지 알려주세요.",
+  ja: "お大事になさってください。何か変化がございましたらお知らせください。"
 };
 
 const genericStaffAnswers = [
   { v: "ok", jp: "対応いたします", icon: "✅",
-    text: { en: "We'll take care of that.", zh: "我們會為您處理。", ko: "처리해 드리겠습니다." } },
+    text: { en: "We'll take care of that.", zh: "我們會為您處理。", ko: "처리해 드리겠습니다.", ja: "対応いたします。" } },
   { v: "wait", jp: "少々お待ちください", icon: "⏳",
-    text: { en: "One moment, please.", zh: "請稍候。", ko: "잠시만 기다려 주세요." } },
+    text: { en: "One moment, please.", zh: "請稍候。", ko: "잠시만 기다려 주세요.", ja: "少々お待ちください。" } },
   { v: "no", jp: "対応が難しいです、申し訳ございません", icon: "🙏",
-    text: { en: "We're sorry, this may be difficult.", zh: "很抱歉，這可能有困難。", ko: "죄송합니다, 어려울 수 있습니다." } }
+    text: { en: "We're sorry, this may be difficult.", zh: "很抱歉，這可能有困難。", ko: "죄송합니다, 어려울 수 있습니다.", ja: "申し訳ございません、対応が難しい状況です。" } }
 ];
 
 // NOTE: 施設ごとの実際の部屋タイプ名・コードに置き換えて運用してください（導入時にカスタマイズする項目です）
@@ -429,17 +438,18 @@ const mapRegions = [
 ];
 
 const roomTypeOptions = [
-  { v: "single", jp: "シングル", icon: "🛏️", label: { en: "Single Room", zh: "單人房", ko: "싱글룸" } },
-  { v: "double", jp: "ダブル", icon: "🛏️", label: { en: "Double Room", zh: "雙人房（一張大床）", ko: "더블룸" } },
-  { v: "twin", jp: "ツイン", icon: "🛏️🛏️", label: { en: "Twin Room", zh: "雙床房", ko: "트윈룸" } },
-  { v: "japanese", jp: "和室", icon: "🎎", label: { en: "Japanese-style Room", zh: "和室", ko: "일본식 다다미방" } }
+  { v: "single", jp: "シングル", icon: "🛏️", label: { en: "Single Room", zh: "單人房", ko: "싱글룸", ja: "シングルルーム" } },
+  { v: "double", jp: "ダブル", icon: "🛏️", label: { en: "Double Room", zh: "雙人房（一張大床）", ko: "더블룸", ja: "ダブルルーム" } },
+  { v: "twin", jp: "ツイン", icon: "🛏️🛏️", label: { en: "Twin Room", zh: "雙床房", ko: "트윈룸", ja: "ツインルーム" } },
+  { v: "japanese", jp: "和室", icon: "🎎", label: { en: "Japanese-style Room", zh: "和室", ko: "일본식 다다미방", ja: "和室" } }
 ];
 
 function lateCheckoutAnswerText(yen) {
   return {
     en: `The extra charge for late checkout is ¥${yen.toLocaleString()}.`,
     zh: `延遲退房的額外費用為 ¥${yen.toLocaleString()}。`,
-    ko: `레이트 체크아웃 추가 요금은 ¥${yen.toLocaleString()}입니다.`
+    ko: `레이트 체크아웃 추가 요금은 ¥${yen.toLocaleString()}입니다.`,
+    ja: `レイトチェックアウトの追加料金は ¥${yen.toLocaleString()} です。`
   };
 }
 
@@ -447,52 +457,57 @@ function lateCheckoutAnswerText(yen) {
 // 延泊・部屋タイプ変更は満室で対応できないケースがあるため、料金入力の前に「ご用意できるか」を確認する
 function roomUnavailableText(kind) {
   const subject = kind === "extend"
-    ? { en: "an extra night", zh: "加住一晚的空房", ko: "연박 가능한 객실" }
-    : { en: "the room type you requested", zh: "您想更改的房型", ko: "요청하신 객실 타입" };
+    ? { en: "an extra night", zh: "加住一晚的空房", ko: "연박 가능한 객실", ja: "延泊分のお部屋" }
+    : { en: "the room type you requested", zh: "您想更改的房型", ko: "요청하신 객실 타입", ja: "ご希望のお部屋タイプ" };
   return {
     en: `We're very sorry — we don't have availability for ${subject.en} at this time.`,
     zh: `非常抱歉，目前沒有可提供${subject.zh}的空房。`,
-    ko: `죄송합니다. 현재 ${subject.ko}이(가) 없습니다.`
+    ko: `죄송합니다. 현재 ${subject.ko}이(가) 없습니다.`,
+    ja: `大変申し訳ございません。現在、${subject.ja}のご用意がございません。`
   };
 }
 
 function feeAnswerText(yen, kind) {
   if (yen === 0) {
-    return { en: "There is no additional charge.", zh: "無需支付額外費用。", ko: "추가 요금은 없습니다." };
+    return { en: "There is no additional charge.", zh: "無需支付額外費用。", ko: "추가 요금은 없습니다.", ja: "追加料金はございません。" };
   }
   const subject = kind === "extend"
-    ? { en: "for your extra night(s)", zh: "加住的費用", ko: "연박 요금" }
-    : { en: "for the room change", zh: "房型變更費用", ko: "객실 변경 요금" };
+    ? { en: "for your extra night(s)", zh: "加住的費用", ko: "연박 요금", ja: "延泊分の料金" }
+    : { en: "for the room change", zh: "房型變更費用", ko: "객실 변경 요금", ja: "お部屋タイプ変更の料金" };
   return {
     en: `The charge ${subject.en} is ¥${yen.toLocaleString()}.`,
     zh: `${subject.zh}為 ¥${yen.toLocaleString()}。`,
-    ko: `${subject.ko}은(는) ¥${yen.toLocaleString()}입니다.`
+    ko: `${subject.ko}은(는) ¥${yen.toLocaleString()}입니다.`,
+    ja: `${subject.ja}は ¥${yen.toLocaleString()} です。`
   };
 }
 
 // paymentMethod: "card"（事前カード決済 → 差額をカードへ返金） / "onsite"（現地精算 → フロントで現金にて返金）
 function cancelFeeAnswerText(yen, paymentMethod) {
   if (yen === 0) {
-    return { en: "There is no cancellation fee — it's free.", zh: "無需支付取消費用，完全免費。", ko: "취소 수수료는 없습니다. 무료입니다." };
+    return { en: "There is no cancellation fee — it's free.", zh: "無需支付取消費用，完全免費。", ko: "취소 수수료는 없습니다. 무료입니다.", ja: "キャンセル料はかかりません。無料です。" };
   }
   if (paymentMethod === "card") {
     return {
       en: `The cancellation fee is ¥${yen.toLocaleString()}. The remaining balance will be refunded to your card.`,
       zh: `取消費用為 ¥${yen.toLocaleString()}。剩餘款項將退回至您的信用卡。`,
-      ko: `취소 수수료는 ¥${yen.toLocaleString()}입니다. 남은 금액은 카드로 환불됩니다.`
+      ko: `취소 수수료는 ¥${yen.toLocaleString()}입니다. 남은 금액은 카드로 환불됩니다.`,
+      ja: `キャンセル料は ¥${yen.toLocaleString()} です。残額はカードへ返金いたします。`
     };
   }
   if (paymentMethod === "onsite") {
     return {
       en: `The cancellation fee is ¥${yen.toLocaleString()}. Please come to the front desk to receive the remaining balance in cash.`,
       zh: `取消費用為 ¥${yen.toLocaleString()}。請至櫃檯領取以現金退還的餘額。`,
-      ko: `취소 수수료는 ¥${yen.toLocaleString()}입니다. 남은 금액은 프런트에서 현금으로 받으실 수 있습니다.`
+      ko: `취소 수수료는 ¥${yen.toLocaleString()}입니다. 남은 금액은 프런트에서 현금으로 받으실 수 있습니다.`,
+      ja: `キャンセル料は ¥${yen.toLocaleString()} です。残額はフロントにて現金でお返しいたします。`
     };
   }
   return {
     en: `The cancellation fee is ¥${yen.toLocaleString()}.`,
     zh: `取消費用為 ¥${yen.toLocaleString()}。`,
-    ko: `취소 수수료는 ¥${yen.toLocaleString()}입니다.`
+    ko: `취소 수수료는 ¥${yen.toLocaleString()}입니다.`,
+    ja: `キャンセル料は ¥${yen.toLocaleString()} です。`
   };
 }
 
@@ -523,22 +538,24 @@ function relativeDayLabelJp(days) {
   return `${days}日後`;
 }
 function relativeDayLabel(days) {
-  if (days === 1) return { en: "tomorrow", zh: "明天", ko: "내일" };
-  if (days === 2) return { en: "the day after tomorrow", zh: "後天", ko: "모레" };
-  return { en: `in ${days} days`, zh: `${days}天後`, ko: `${days}일 후` };
+  if (days === 1) return { en: "tomorrow", zh: "明天", ko: "내일", ja: "明日" };
+  if (days === 2) return { en: "the day after tomorrow", zh: "後天", ko: "모레", ja: "明後日" };
+  return { en: `in ${days} days`, zh: `${days}天後`, ko: `${days}일 후`, ja: `${days}日後` };
 }
 function luggageCutoffNoteText(pastCutoff) {
   if (pastCutoff) {
     return {
       en: `Today's ${LUGGAGE_PICKUP_CUTOFF_HOUR}:00 pickup has already closed (this will go out with tomorrow's pickup).`,
       zh: `今日 ${LUGGAGE_PICKUP_CUTOFF_HOUR}:00 的收件已截止（將於明日收件寄出）。`,
-      ko: `오늘 ${LUGGAGE_PICKUP_CUTOFF_HOUR}시 수거는 마감되었습니다 (내일 수거분으로 발송됩니다).`
+      ko: `오늘 ${LUGGAGE_PICKUP_CUTOFF_HOUR}시 수거는 마감되었습니다 (내일 수거분으로 발송됩니다).`,
+      ja: `本日${LUGGAGE_PICKUP_CUTOFF_HOUR}時の集荷は締め切りました（明日の集荷分としての発送になります）。`
     };
   }
   return {
     en: `Still in time for today's pickup (by ${LUGGAGE_PICKUP_CUTOFF_HOUR}:00).`,
     zh: `仍趕得上今日 ${LUGGAGE_PICKUP_CUTOFF_HOUR}:00 前的收件。`,
-    ko: `오늘 ${LUGGAGE_PICKUP_CUTOFF_HOUR}시까지의 수거에 맞출 수 있습니다.`
+    ko: `오늘 ${LUGGAGE_PICKUP_CUTOFF_HOUR}시까지의 수거에 맞출 수 있습니다.`,
+    ja: `本日${LUGGAGE_PICKUP_CUTOFF_HOUR}時までの集荷にまだ間に合います。`
   };
 }
 function luggageMinDateNoteText(earliest) {
@@ -546,44 +563,49 @@ function luggageMinDateNoteText(earliest) {
   return {
     en: `Please choose ${earliest.mm}/${earliest.dd} (${rel.en}) or later. (Today's pickup cutoff is ${LUGGAGE_PICKUP_CUTOFF_HOUR}:00.)`,
     zh: `請選擇 ${earliest.mm}/${earliest.dd}（${rel.zh}）以後的日期。（今日收件截止時間為 ${LUGGAGE_PICKUP_CUTOFF_HOUR}:00。）`,
-    ko: `${earliest.mm}/${earliest.dd}(${rel.ko}) 이후로 선택해 주세요. (오늘 수거 마감 시간은 ${LUGGAGE_PICKUP_CUTOFF_HOUR}시입니다.)`
+    ko: `${earliest.mm}/${earliest.dd}(${rel.ko}) 이후로 선택해 주세요. (오늘 수거 마감 시간은 ${LUGGAGE_PICKUP_CUTOFF_HOUR}시입니다.)`,
+    ja: `${earliest.mm}/${earliest.dd}（${rel.ja}）以降でお選びください。（本日の集荷締切は${LUGGAGE_PICKUP_CUTOFF_HOUR}時です。）`
   };
 }
-const backToEarliestLabel = { en: "← Back to suggested date", zh: "← 返回建議日期", ko: "← 추천 날짜로 돌아가기" };
+const backToEarliestLabel = { en: "← Back to suggested date", zh: "← 返回建議日期", ko: "← 추천 날짜로 돌아가기", ja: "← おすすめの日付に戻る" };
 
 function luggageFeeAnswerText(yen) {
   if (yen === 0) {
-    return { en: "There is no charge for this delivery.", zh: "此運送無需支付費用。", ko: "이 배송에는 요금이 없습니다." };
+    return { en: "There is no charge for this delivery.", zh: "此運送無需支付費用。", ko: "이 배송에는 요금이 없습니다.", ja: "この配送に料金はかかりません。" };
   }
   return {
     en: `The shipping fee is ¥${yen.toLocaleString()}. Please pay now — we'll give you a copy of the shipping slip. Thank you!`,
     zh: `運費為 ¥${yen.toLocaleString()}。請現在付款，我們將提供您送貨單存根。謝謝您！`,
-    ko: `배송 요금은 ¥${yen.toLocaleString()}입니다. 지금 결제해 주시면 송장 사본을 드리겠습니다. 감사합니다!`
+    ko: `배송 요금은 ¥${yen.toLocaleString()}입니다. 지금 결제해 주시면 송장 사본을 드리겠습니다. 감사합니다!`,
+    ja: `配送料は ¥${yen.toLocaleString()} です。今お支払いいただき、伝票の控えをお渡しします。ありがとうございます！`
   };
 }
 // 荷物輸送：本日発送する場合の「少々お待ちください（輸送費を計算します）」案内
 const luggageWaitText = {
   en: "We'll calculate the shipping fee now — please wait a moment.",
   zh: "我們現在為您計算運費，請稍候。",
-  ko: "지금 배송 요금을 계산해 드리겠습니다. 잠시만 기다려 주세요."
+  ko: "지금 배송 요금을 계산해 드리겠습니다. 잠시만 기다려 주세요.",
+  ja: "ただいま配送料を計算いたします。少々お待ちください。"
 };
 // 荷物輸送：後日発送する場合の案内（今は支払い不要）
 const luggageLaterText = {
   en: "No problem — whenever you're ready to send it, please bring your luggage to the front desk and pay the shipping fee at that time.",
   zh: "沒問題，準備好寄送時，請攜帶行李至櫃檯，並於當時支付運費。",
-  ko: "괜찮습니다. 보내실 준비가 되면 수하물을 프런트로 가져오셔서 그때 배송 요금을 지불해 주세요."
+  ko: "괜찮습니다. 보내실 준비가 되면 수하물을 프런트로 가져오셔서 그때 배송 요금을 지불해 주세요.",
+  ja: "かしこまりました。ご準備ができましたら、荷物をフロントまでお持ちいただき、その際に配送料をお支払いください。"
 };
 
 function lendAnswerText(availableItems, unavailableItems) {
-  const sep = { en: ", ", zh: "、", ko: ", " };
+  const sep = { en: ", ", zh: "、", ko: ", ", ja: "、" };
   const texts = {};
-  ["en", "zh", "ko"].forEach(lang => {
+  ["en", "zh", "ko", "ja"].forEach(lang => {
     const parts = [];
     if (availableItems.length) {
       const list = availableItems.map(o => o.label[lang]).join(sep[lang]);
       if (lang === "en") parts.push(`We can prepare: ${list}.`);
       if (lang === "zh") parts.push(`我們可以為您準備：${list}。`);
       if (lang === "ko") parts.push(`준비해 드리겠습니다: ${list}.`);
+      if (lang === "ja") parts.push(`ご用意いたします：${list}。`);
     }
     if (unavailableItems.length) {
       const list = unavailableItems.map(o => o.label[lang]).join(sep[lang]);
@@ -591,6 +613,7 @@ function lendAnswerText(availableItems, unavailableItems) {
       if (lang === "en") parts.push(`Sorry, ${list} ${plural ? "are" : "is"} currently being used by another guest. Please check with us again later — ${plural ? "they" : "it"} may become available once returned.`);
       if (lang === "zh") parts.push(`很抱歉，${list} 目前有其他房客正在使用。請稍後再次詢問我們，歸還後或許就能為您提供。`);
       if (lang === "ko") parts.push(`죄송합니다, ${list}은(는) 현재 다른 투숙객이 사용 중입니다. 반납되면 다시 대여해 드릴 수 있으니 잠시 후 다시 문의해 주세요.`);
+      if (lang === "ja") parts.push(`申し訳ございません、${list}は現在他のお客様がご利用中です。返却され次第ご案内できる場合がございますので、後ほど改めてお尋ねください。`);
     }
     texts[lang] = parts.join("\n");
   });
@@ -601,41 +624,44 @@ function lendAnswerText(availableItems, unavailableItems) {
 const taxiWaitText = {
   en: "We'll call the taxi company now — please wait a moment.",
   zh: "我們將立即致電計程車公司，請稍候。",
-  ko: "택시 회사에 바로 연락드리겠습니다. 잠시만 기다려 주세요."
+  ko: "택시 회사에 바로 연락드리겠습니다. 잠시만 기다려 주세요.",
+  ja: "ただいまタクシー会社に確認いたします。少々お待ちください。"
 };
 const taxiUnavailableText = {
   en: "We're sorry, we're unable to arrange a taxi at this time.",
   zh: "非常抱歉，目前無法為您安排計程車。",
-  ko: "죄송합니다, 현재 택시를 수배해 드릴 수 없습니다."
+  ko: "죄송합니다, 현재 택시를 수배해 드릴 수 없습니다.",
+  ja: "申し訳ございません、現在タクシーの手配ができません。"
 };
 function taxiEtaConfirmText(minutes) {
   return {
     en: `The taxi can arrive in about ${minutes} minutes at the earliest. Shall we go ahead and book it?`,
     zh: `計程車最快約 ${minutes} 分鐘後可抵達。是否要為您安排？`,
-    ko: `택시는 최소 약 ${minutes}분 후에 도착 가능합니다. 예약해 드릴까요?`
+    ko: `택시는 최소 약 ${minutes}분 후에 도착 가능합니다. 예약해 드릴까요?`,
+    ja: `タクシーは早くて約${minutes}分後に到着可能です。手配してよろしいですか？`
   };
 }
-const taxiYesLabel = { en: "Yes, please book it", zh: "是，請幫我安排", ko: "네, 예약해 주세요" };
-const taxiNoLabel = { en: "No, that's fine", zh: "不用了，謝謝", ko: "아니요, 괜찮습니다" };
+const taxiYesLabel = { en: "Yes, please book it", zh: "是，請幫我安排", ko: "네, 예약해 주세요", ja: "はい、お願いします" };
+const taxiNoLabel = { en: "No, that's fine", zh: "不用了，謝謝", ko: "아니요, 괜찮습니다", ja: "いいえ、結構です" };
 
 const categories = [
   {
     id: "lend",
     icon: "🧺",
-    label: { en: "Borrow an Item", zh: "借用物品", ko: "물품 대여" },
+    label: { en: "Borrow an Item", zh: "借用物品", ko: "물품 대여", ja: "貸出品" },
     steps: [
       { type: "multiItem", key: "items",
-        q: { en: "What would you like to borrow? (choose quantity for each)", zh: "您需要借用什麼？（請選擇各項數量）", ko: "무엇을 몇 개 대여하시겠어요? (항목별로 선택)" },
+        q: { en: "What would you like to borrow? (choose quantity for each)", zh: "您需要借用什麼？（請選擇各項數量）", ko: "무엇을 몇 개 대여하시겠어요? (항목별로 선택)", ja: "何を、いくつ借りたいですか？（各項目の数量をお選びください）" },
         options: [
-          { v: "charger", jp: "スマホ充電器", icon:"🔋", label: { en:"Phone Charger", zh:"手機充電器", ko:"휴대폰 충전기" } },
-          { v: "adapter", jp: "変換プラグ・変圧器", icon:"🔌", label: { en:"Power Adapter", zh:"轉接頭/變壓器", ko:"어댑터" } },
-          { v: "towel", jp: "追加タオル", icon:"🧺", label: { en:"Extra Towel", zh:"加毛巾", ko:"수건 추가" } },
-          { v: "toothbrush", jp: "歯ブラシ", icon:"🪥", label: { en:"Toothbrush", zh:"牙刷", ko:"칫솔" } },
-          { v: "fan", jp: "小型扇風機", icon:"🌀", label: { en:"Fan", zh:"電風扇", ko:"선풍기" } },
-          { v: "blanket", jp: "毛布", icon:"🛏️", label: { en:"Blanket", zh:"毛毯", ko:"담요" } },
-          { v: "pillow", jp: "枕", icon:"🛌", label: { en:"Pillow", zh:"枕頭", ko:"베개" } },
-          { v: "footpillow", jp: "フットピロー", icon:"🦶", label: { en:"Foot Pillow", zh:"腳枕", ko:"발베개" } },
-          { v: "iron", jp: "アイロン", icon:"👔", label: { en:"Iron", zh:"熨斗", ko:"다리미" } }
+          { v: "charger", jp: "スマホ充電器", icon:"🔋", label: { en:"Phone Charger", zh:"手機充電器", ko:"휴대폰 충전기", ja:"スマホ充電器" } },
+          { v: "adapter", jp: "変換プラグ・変圧器", icon:"🔌", label: { en:"Power Adapter", zh:"轉接頭/變壓器", ko:"어댑터", ja:"変換プラグ・変圧器" } },
+          { v: "towel", jp: "追加タオル", icon:"🧺", label: { en:"Extra Towel", zh:"加毛巾", ko:"수건 추가", ja:"追加タオル" } },
+          { v: "toothbrush", jp: "歯ブラシ", icon:"🪥", label: { en:"Toothbrush", zh:"牙刷", ko:"칫솔", ja:"歯ブラシ" } },
+          { v: "fan", jp: "小型扇風機", icon:"🌀", label: { en:"Fan", zh:"電風扇", ko:"선풍기", ja:"小型扇風機" } },
+          { v: "blanket", jp: "毛布", icon:"🛏️", label: { en:"Blanket", zh:"毛毯", ko:"담요", ja:"毛布" } },
+          { v: "pillow", jp: "枕", icon:"🛌", label: { en:"Pillow", zh:"枕頭", ko:"베개", ja:"枕" } },
+          { v: "footpillow", jp: "フットピロー", icon:"🦶", label: { en:"Foot Pillow", zh:"腳枕", ko:"발베개", ja:"フットピロー" } },
+          { v: "iron", jp: "アイロン", icon:"👔", label: { en:"Iron", zh:"熨斗", ko:"다리미", ja:"アイロン" } }
         ]
       },
       { type: "room", key: "room" }
@@ -650,15 +676,15 @@ const categories = [
   {
     id: "stay",
     icon: "📅",
-    label: { en: "Stay / Room Change", zh: "住宿天數／房型變更", ko: "숙박·객실 변경" },
+    label: { en: "Stay / Room Change", zh: "住宿天數／房型變更", ko: "숙박·객실 변경", ja: "宿泊・お部屋の変更" },
     steps: [
       { type: "choice", key: "kind",
-        q: { en: "What would you like?", zh: "您需要什麼？", ko: "무엇을 원하시나요?" },
+        q: { en: "What would you like?", zh: "您需要什麼？", ko: "무엇을 원하시나요?", ja: "どのようなご用件ですか？" },
         options: [
-          { v: "late", jp: "レイトチェックアウト", icon:"⏰", label:{ en:"Late Checkout", zh:"延遲退房", ko:"레이트 체크아웃" } },
-          { v: "extend", jp: "延泊", icon:"📅", label:{ en:"Extend Stay (extra night)", zh:"延長住宿", ko:"연박" } },
-          { v: "roomchange", jp: "部屋タイプ変更", icon:"🔄", label:{ en:"Change Room Type", zh:"更改房型", ko:"객실 타입 변경" } },
-          { v: "cancel", jp: "キャンセル・減泊について", icon:"🚫", label:{ en:"Cancel / Reduce Nights", zh:"取消／減少住宿晚數", ko:"취소·숙박일 단축" } }
+          { v: "late", jp: "レイトチェックアウト", icon:"⏰", label:{ en:"Late Checkout", zh:"延遲退房", ko:"레이트 체크아웃", ja:"レイトチェックアウト" } },
+          { v: "extend", jp: "延泊", icon:"📅", label:{ en:"Extend Stay (extra night)", zh:"延長住宿", ko:"연박", ja:"延泊" } },
+          { v: "roomchange", jp: "部屋タイプ変更", icon:"🔄", label:{ en:"Change Room Type", zh:"更改房型", ko:"객실 타입 변경", ja:"部屋タイプ変更" } },
+          { v: "cancel", jp: "キャンセル・減泊について", icon:"🚫", label:{ en:"Cancel / Reduce Nights", zh:"取消／減少住宿晚數", ko:"취소·숙박일 단축", ja:"キャンセル・減泊について" } }
         ]
       },
     ],
@@ -679,15 +705,15 @@ const categories = [
   {
     id: "trouble",
     icon: "⚠️",
-    label: { en: "Room Issue", zh: "客房問題", ko: "객실 문제" },
+    label: { en: "Room Issue", zh: "客房問題", ko: "객실 문제", ja: "お部屋のトラブル" },
     steps: [
       { type: "choice", key: "issue",
-        q: { en: "What's the issue?", zh: "發生了什麼問題？", ko: "어떤 문제인가요?" },
+        q: { en: "What's the issue?", zh: "發生了什麼問題？", ko: "어떤 문제인가요?", ja: "どのような問題ですか？" },
         options: [
-          { v: "hotwater", jp: "お湯が出ない", icon:"🚿", label:{ en:"No hot water", zh:"沒有熱水", ko:"온수가 안 나와요" } },
-          { v: "aircon", jp: "エアコンの温度調整ができない", icon:"🌡️", label:{ en:"Can't adjust room temperature", zh:"無法調整空調溫度", ko:"에어컨 온도 조절 불가" } },
-          { v: "key", jp: "鍵（カードキー）が反応しない", icon:"🔑", label:{ en:"Key card not working", zh:"房卡無法開門", ko:"카드키가 안 열려요" } },
-          { v: "lockedout", jp: "締め出された（鍵を部屋に置いたまま外出）", icon:"🚪", label:{ en:"Locked out (key left inside)", zh:"被反鎖在外（鑰匙留在房內）", ko:"방에 열쇠를 두고 나와 잠겼어요" } }
+          { v: "hotwater", jp: "お湯が出ない", icon:"🚿", label:{ en:"No hot water", zh:"沒有熱水", ko:"온수가 안 나와요", ja:"お湯が出ない" } },
+          { v: "aircon", jp: "エアコンの温度調整ができない", icon:"🌡️", label:{ en:"Can't adjust room temperature", zh:"無法調整空調溫度", ko:"에어컨 온도 조절 불가", ja:"エアコンの温度調整ができない" } },
+          { v: "key", jp: "鍵（カードキー）が反応しない", icon:"🔑", label:{ en:"Key card not working", zh:"房卡無法開門", ko:"카드키가 안 열려요", ja:"鍵（カードキー）が反応しない" } },
+          { v: "lockedout", jp: "締め出された（鍵を部屋に置いたまま外出）", icon:"🚪", label:{ en:"Locked out (key left inside)", zh:"被反鎖在外（鑰匙留在房內）", ko:"방에 열쇠를 두고 나와 잠겼어요", ja:"締め出された（鍵を部屋に置いたまま外出）" } }
         ]
       },
       { type: "urgency", key: "urgent" },
@@ -699,26 +725,26 @@ const categories = [
     id: "breakfast",
     icon: "🍳",
     faq: true,
-    label: { en: "Breakfast Questions", zh: "早餐相關問題", ko: "조식 관련 문의" },
+    label: { en: "Breakfast Questions", zh: "早餐相關問題", ko: "조식 관련 문의", ja: "朝食に関するご質問" },
     questions: [
-      { v: "halal", icon: "🕌", label: { en: "Halal / Dietary restrictions", zh: "清真／飲食禁忌", ko: "할랄·식이 제한" }, answer: halalExplain, placeholder: true },
-      { v: "takeout", icon: "🍱", label: { en: "Taking breakfast to your room", zh: "早餐可否帶回房間", ko: "조식 객실로 가져가기" }, answer: takeoutExplain, placeholder: true }
+      { v: "halal", icon: "🕌", label: { en: "Halal / Dietary restrictions", zh: "清真／飲食禁忌", ko: "할랄·식이 제한", ja: "ハラール対応／食事制限について" }, answer: halalExplain, placeholder: true },
+      { v: "takeout", icon: "🍱", label: { en: "Taking breakfast to your room", zh: "早餐可否帶回房間", ko: "조식 객실로 가져가기", ja: "朝食をお部屋に持ち帰る" }, answer: takeoutExplain, placeholder: true }
     ]
   },
   {
     id: "taxi",
     icon: "🚕",
-    label: { en: "Call a Taxi", zh: "叫計程車", ko: "택시 호출" },
+    label: { en: "Call a Taxi", zh: "叫計程車", ko: "택시 호출", ja: "タクシーを呼ぶ" },
     steps: [
       { type: "choice", key: "when",
-        q: { en: "When do you need it?", zh: "您需要什麼時候的車？", ko: "언제 필요하신가요?" },
+        q: { en: "When do you need it?", zh: "您需要什麼時候的車？", ko: "언제 필요하신가요?", ja: "いつご利用になりますか？" },
         options: [
-          { v: "now", jp: "今すぐ", icon:"⚡", label:{ en:"Right now", zh:"現在", ko:"지금 바로" } },
-          { v: "time", jp: "時刻を指定", icon:"🕐", label:{ en:"Specify a time", zh:"指定時間", ko:"시간 지정" } }
+          { v: "now", jp: "今すぐ", icon:"⚡", label:{ en:"Right now", zh:"現在", ko:"지금 바로", ja:"今すぐ" } },
+          { v: "time", jp: "時刻を指定", icon:"🕐", label:{ en:"Specify a time", zh:"指定時間", ko:"시간 지정", ja:"時刻を指定" } }
         ]
       },
       { type: "stepper", key: "cars",
-        q: { en: "How many taxis do you need?", zh: "您需要幾輛計程車？", ko: "택시가 몇 대 필요하신가요?" } },
+        q: { en: "How many taxis do you need?", zh: "您需要幾輛計程車？", ko: "택시가 몇 대 필요하신가요?", ja: "タクシーは何台必要ですか？" } },
       { type: "room", key: "room" }
     ],
     summary: (a) => {
@@ -734,33 +760,33 @@ const categories = [
   {
     id: "luggage",
     icon: "🧳",
-    label: { en: "Luggage Forwarding", zh: "行李運送", ko: "수하물 운송" },
+    label: { en: "Luggage Forwarding", zh: "行李運送", ko: "수하물 운송", ja: "荷物の配送" },
     steps: [
       // まず「今すぐ手配するか」を聞く。まだ決めていないゲストに住所や個数を聞いても無駄なので、
       // ここで「いいえ」ならこの先の質問を全部スキップして「後で来てね」の案内だけ出す
       { type: "choice", key: "readyNow",
-        q: { en: "Would you like to arrange this now?", zh: "您現在要安排寄送嗎？", ko: "지금 접수하시겠어요?" },
+        q: { en: "Would you like to arrange this now?", zh: "您現在要安排寄送嗎？", ko: "지금 접수하시겠어요?", ja: "今すぐ手配なさいますか？" },
         options: [
-          { v: "yes", jp: "はい、今すぐ手配する", icon: "✅", label: { en: "Yes, now", zh: "是，現在辦理", ko: "네, 지금요" } },
-          { v: "notyet", jp: "まだ決めていない", icon: "🕐", label: { en: "Not yet / later", zh: "還沒決定／稍後", ko: "아직 아니요·나중에" } }
+          { v: "yes", jp: "はい、今すぐ手配する", icon: "✅", label: { en: "Yes, now", zh: "是，現在辦理", ko: "네, 지금요", ja: "はい、今すぐ手配する" } },
+          { v: "notyet", jp: "まだ決めていない", icon: "🕐", label: { en: "Not yet / later", zh: "還沒決定／稍後", ko: "아직 아니요·나중에", ja: "まだ決めていない" } }
         ]
       },
       // 地名を読めない外国人でも位置をタップするだけで選べるよう地図形式にしている。
       // 正確な住所・電話番号・受取人名はスタッフが対面で確認し、送り状はスタッフが作成する
       { type: "mapArea", key: "destArea",
-        q: { en: "Where should we send it? (tap the nearest airport)", zh: "行李要寄送到哪裡？（請點選最近的機場）", ko: "어디로 보내드릴까요? (가까운 공항을 선택하세요)" } },
+        q: { en: "Where should we send it? (tap the nearest airport)", zh: "行李要寄送到哪裡？（請點選最近的機場）", ko: "어디로 보내드릴까요? (가까운 공항을 선택하세요)", ja: "どちらへお送りしますか？（最寄りの空港をタップしてください）" } },
       { type: "arrivalChoice", key: "arriveDate" },
       { type: "choice", key: "arriveTime",
-        q: { en: "Preferred time of arrival?", zh: "希望送達的時段？", ko: "희망 도착 시간대는?" },
+        q: { en: "Preferred time of arrival?", zh: "希望送達的時段？", ko: "희망 도착 시간대는?", ja: "希望到着時間帯は？" },
         options: [
-          { v: "morning", jp: "午前中", icon:"🌅", label:{ en:"Morning", zh:"上午", ko:"오전" } },
-          { v: "afternoon", jp: "午後", icon:"☀️", label:{ en:"Afternoon", zh:"下午", ko:"오후" } },
-          { v: "evening", jp: "夜", icon:"🌙", label:{ en:"Evening", zh:"晚上", ko:"저녁" } },
-          { v: "any", jp: "指定なし", icon:"🕐", label:{ en:"No preference", zh:"不指定", ko:"상관없음" } }
+          { v: "morning", jp: "午前中", icon:"🌅", label:{ en:"Morning", zh:"上午", ko:"오전", ja:"午前中" } },
+          { v: "afternoon", jp: "午後", icon:"☀️", label:{ en:"Afternoon", zh:"下午", ko:"오후", ja:"午後" } },
+          { v: "evening", jp: "夜", icon:"🌙", label:{ en:"Evening", zh:"晚上", ko:"저녁", ja:"夜" } },
+          { v: "any", jp: "指定なし", icon:"🕐", label:{ en:"No preference", zh:"不指定", ko:"상관없음", ja:"指定なし" } }
         ]
       },
       { type: "stepper", key: "bagCount",
-        q: { en: "How many bags would you like us to send?", zh: "您需要寄送幾件行李？", ko: "몇 개의 수하물을 보내드릴까요?" } },
+        q: { en: "How many bags would you like us to send?", zh: "您需要寄送幾件行李？", ko: "몇 개의 수하물을 보내드릴까요?", ja: "荷物はいくつお送りしますか？" } },
       { type: "room", key: "room" }
     ],
     summary: (a) => {
@@ -775,36 +801,36 @@ const categories = [
     id: "area",
     icon: "🚌",
     staticInfo: true,
-    label: { en: "Local Info / Timetable", zh: "周邊資訊／時刻表", ko: "주변 정보·시간표" },
+    label: { en: "Local Info / Timetable", zh: "周邊資訊／時刻表", ko: "주변 정보·시간표", ja: "周辺情報／時刻表" },
     content: localInfoExplain,
     placeholder: true
   },
   {
     id: "emergency",
     icon: "🚨",
-    label: { en: "Emergency / Not feeling well", zh: "緊急狀況／身體不適", ko: "긴급 상황·몸이 아파요" },
+    label: { en: "Emergency / Not feeling well", zh: "緊急狀況／身體不適", ko: "긴급 상황·몸이 아파요", ja: "緊急・体調不良" },
     emergency: true,
     // 気分が悪い／怪我のみを想定。病院手配が要るかどうかで分岐し、不要な場合だけ絆創膏の要否を聞く。
     steps: [
       { type: "choice", key: "issue",
-        q: { en: "What's happening?", zh: "發生了什麼事？", ko: "무슨 일인가요?" },
+        q: { en: "What's happening?", zh: "發生了什麼事？", ko: "무슨 일인가요?", ja: "どうされましたか？" },
         options: [
-          { v: "sick", jp: "気分が悪い", icon:"🤒", label:{ en:"Feeling unwell", zh:"身體不適", ko:"몸이 안 좋아요" } },
-          { v: "injury", jp: "怪我をした", icon:"🩹", label:{ en:"Injury", zh:"受傷了", ko:"다쳤어요" } }
+          { v: "sick", jp: "気分が悪い", icon:"🤒", label:{ en:"Feeling unwell", zh:"身體不適", ko:"몸이 안 좋아요", ja:"気分が悪い" } },
+          { v: "injury", jp: "怪我をした", icon:"🩹", label:{ en:"Injury", zh:"受傷了", ko:"다쳤어요", ja:"怪我をした" } }
         ]
       },
       { type: "choice", key: "needsHospital",
-        q: { en: "Would you like us to arrange transportation to a hospital?", zh: "需要為您安排前往醫院的交通嗎？", ko: "병원 이동을 도와드릴까요?" },
+        q: { en: "Would you like us to arrange transportation to a hospital?", zh: "需要為您安排前往醫院的交通嗎？", ko: "병원 이동을 도와드릴까요?", ja: "病院までの移動をお手伝いしましょうか？" },
         options: [
-          { v: "yes", jp: "はい、病院へ", icon:"🚑", label:{ en:"Yes, please", zh:"是，需要", ko:"네, 부탁드려요" } },
-          { v: "no", jp: "いいえ、大丈夫です", icon:"🙅", label:{ en:"No, that's okay", zh:"不用了", ko:"아니요, 괜찮아요" } }
+          { v: "yes", jp: "はい、病院へ", icon:"🚑", label:{ en:"Yes, please", zh:"是，需要", ko:"네, 부탁드려요", ja:"はい、お願いします" } },
+          { v: "no", jp: "いいえ、大丈夫です", icon:"🙅", label:{ en:"No, that's okay", zh:"不用了", ko:"아니요, 괜찮아요", ja:"いいえ、大丈夫です" } }
         ]
       },
       { type: "choice", key: "needsBandaid",
-        q: { en: "Would you like a band-aid?", zh: "需要OK繃嗎？", ko: "밴드(반창고)가 필요하신가요?" },
+        q: { en: "Would you like a band-aid?", zh: "需要OK繃嗎？", ko: "밴드(반창고)가 필요하신가요?", ja: "絆創膏は必要ですか？" },
         options: [
-          { v: "yes", jp: "はい、お願いします", icon:"🩹", label:{ en:"Yes, please", zh:"是，需要", ko:"네, 부탁드려요" } },
-          { v: "no", jp: "いいえ、大丈夫です", icon:"🙅", label:{ en:"No, that's okay", zh:"不用了", ko:"아니요, 괜찮아요" } }
+          { v: "yes", jp: "はい、お願いします", icon:"🩹", label:{ en:"Yes, please", zh:"是，需要", ko:"네, 부탁드려요", ja:"はい、お願いします" } },
+          { v: "no", jp: "いいえ、大丈夫です", icon:"🙅", label:{ en:"No, that's okay", zh:"不用了", ko:"아니요, 괜찮아요", ja:"いいえ、大丈夫です" } }
         ]
       },
       { type: "room", key: "room" }
@@ -922,9 +948,9 @@ function getSteps(cat) {
     const base = [cat.steps[0]];
     if (state.answers.when === "time") {
       base.push({ type: "date", key: "date",
-        q: { en: "What date would you like the taxi? (MM/DD)", zh: "您希望哪一天用車？（月/日）", ko: "몇 월 며칠에 필요하신가요? (월/일)" } });
+        q: { en: "What date would you like the taxi? (MM/DD)", zh: "您希望哪一天用車？（月/日）", ko: "몇 월 며칠에 필요하신가요? (월/일)", ja: "ご希望の日付を入力してください（月／日）" } });
       base.push({ type: "time", key: "time",
-        q: { en: "What time would you like the taxi?", zh: "您希望幾點搭乘計程車？", ko: "몇 시에 택시를 이용하시겠어요?" } });
+        q: { en: "What time would you like the taxi?", zh: "您希望幾點搭乘計程車？", ko: "몇 시에 택시를 이용하시겠어요?", ja: "ご希望の時刻を入力してください" } });
     }
     base.push(cat.steps[1], cat.steps[2]);
     return base;
@@ -948,20 +974,20 @@ function getSteps(cat) {
   const kind = state.answers.kind;
   if (kind === "late") {
     base.push({ type: "stepper", key: "amount",
-      q: { en: "How many extra hours would you like for late checkout?", zh: "您希望延遲退房幾個小時？", ko: "레이트 체크아웃을 몇 시간 원하시나요?" } });
+      q: { en: "How many extra hours would you like for late checkout?", zh: "您希望延遲退房幾個小時？", ko: "레이트 체크아웃을 몇 시간 원하시나요?", ja: "レイトチェックアウトは何時間ご希望ですか？" } });
     base.push({ type: "room", key: "room" });
   } else if (kind === "extend") {
     base.push({ type: "stepper", key: "amount",
-      q: { en: "How many additional nights would you like to stay?", zh: "您想延長住宿幾晚？", ko: "몇 박 더 연장하시겠어요?" } });
+      q: { en: "How many additional nights would you like to stay?", zh: "您想延長住宿幾晚？", ko: "몇 박 더 연장하시겠어요?", ja: "延泊は何泊ご希望ですか？" } });
     base.push({ type: "peopleChange", key: "peopleMode" });
     base.push({ type: "room", key: "room" });
   } else if (kind === "cancel") {
     base.push({ type: "stepper", key: "amount",
-      q: { en: "How many nights would you like to cancel or reduce?", zh: "您想取消或減少幾晚？", ko: "몇 박을 취소하거나 줄이시겠어요?" } });
+      q: { en: "How many nights would you like to cancel or reduce?", zh: "您想取消或減少幾晚？", ko: "몇 박을 취소하거나 줄이시겠어요?", ja: "キャンセル・減泊は何泊ですか？" } });
     base.push({ type: "room", key: "room" });
   } else if (kind === "roomchange") {
     base.push({ type: "choice", key: "roomType",
-      q: { en: "Which room type?", zh: "您想更改為哪種房型？", ko: "어떤 객실 타입으로 변경하시겠어요?" },
+      q: { en: "Which room type?", zh: "您想更改為哪種房型？", ko: "어떤 객실 타입으로 변경하시겠어요?", ja: "どのお部屋タイプにご変更ですか？" },
       options: roomTypeOptions });
     base.push({ type: "room", key: "room" });
   } else {
@@ -1008,7 +1034,7 @@ function render() {
     document.getElementById("langBar").style.display = "none";
     const q = document.createElement("div");
     q.className = "question";
-    q.textContent = T.chooseLang.en + " / " + T.chooseLang.zh + " / " + T.chooseLang.ko;
+    q.textContent = T.chooseLang.en + " / " + T.chooseLang.zh + " / " + T.chooseLang.ko + " / " + T.chooseLang.ja;
     screen.appendChild(q);
     const grid = document.createElement("div");
     grid.className = "grid";
@@ -1358,7 +1384,8 @@ function render() {
       hint.textContent = t({
         en: "Not sure? Just tap the closest big city — an approximate area is fine, we'll confirm the exact address with you separately.",
         zh: "不確定也沒關係，請點選最近的大城市即可，大概的地區就可以，正確地址我們會再與您確認。",
-        ko: "정확히 모르셔도 괜찮습니다. 가장 가까운 대도시를 선택해 주세요. 대략적인 지역이면 충분하며, 정확한 주소는 따로 확인하겠습니다."
+        ko: "정확히 모르셔도 괜찮습니다. 가장 가까운 대도시를 선택해 주세요. 대략적인 지역이면 충분하며, 정확한 주소는 따로 확인하겠습니다.",
+        ja: "わからない場合は、一番近い都市をタップしてください。おおよその地域で構いません。正確な住所は後ほど確認いたします。"
       });
       screen.appendChild(hint);
 
@@ -1428,7 +1455,7 @@ function render() {
       if (!state.customDateMode) {
         const q = document.createElement("div");
         q.className = "question";
-        q.textContent = t({ en: "Earliest possible arrival", zh: "最快送達日期", ko: "가장 빠른 도착일" });
+        q.textContent = t({ en: "Earliest possible arrival", zh: "最快送達日期", ko: "가장 빠른 도착일", ja: "最短のお届け可能日" });
         screen.appendChild(q);
 
         const box = document.createElement("div");
@@ -1446,13 +1473,13 @@ function render() {
 
         const okBtn = document.createElement("button");
         okBtn.className = "primary-btn";
-        okBtn.textContent = t({ en: "This date is fine", zh: "這個日期可以", ko: "이 날짜로 할게요" });
+        okBtn.textContent = t({ en: "This date is fine", zh: "這個日期可以", ko: "이 날짜로 할게요", ja: "この日付で大丈夫です" });
         okBtn.onclick = () => { state.answers[step.key] = earliest.str; nextStep(); };
         screen.appendChild(okBtn);
 
         const otherBtn = document.createElement("button");
         otherBtn.className = "secondary-btn";
-        otherBtn.textContent = t({ en: "I'd like a different date", zh: "我想指定其他日期", ko: "다른 날짜를 원해요" });
+        otherBtn.textContent = t({ en: "I'd like a different date", zh: "我想指定其他日期", ko: "다른 날짜를 원해요", ja: "別の日付を希望します" });
         otherBtn.onclick = () => { state.customDateMode = true; render(); };
         screen.appendChild(otherBtn);
       } else {
