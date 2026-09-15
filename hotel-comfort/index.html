@@ -1,0 +1,2527 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>おもてなしタップ</title>
+<style>
+  :root {
+    --main: #1f6d87;
+    --accent: #d98a5e;
+    --bg: #faf7f2;
+    --card: #ffffff;
+    --text: #2b2820;
+    --danger: #d9453b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Hiragino Sans", "Noto Sans JP", "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  header {
+    background: var(--main);
+    color: white;
+    padding: 22px 16px;
+    text-align: center;
+    border-radius: 0 0 22px 22px;
+  }
+  header h1 { margin: 0; font-size: 26px; }
+  header p { margin: 8px 0 0; font-size: 16px; opacity: 0.9; }
+
+  .lang-bar {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    padding: 12px 10px;
+    background: white;
+    border-bottom: 1px solid #ddd;
+  }
+  .lang-btn {
+    padding: 10px 20px;
+    border-radius: 999px;
+    border: 2px solid var(--main);
+    background: white;
+    color: var(--main);
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .lang-btn.active { background: var(--main); color: white; }
+
+  .screen { padding: 20px 16px 40px; max-width: 680px; margin: 0 auto; }
+
+  .question {
+    font-size: 26px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .opt-btn {
+    padding: 30px 14px;
+    background: var(--card);
+    border: 2px solid #eeeae2;
+    border-radius: 18px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    font-size: 21px;
+    font-weight: bold;
+    color: var(--text);
+    cursor: pointer;
+    text-align: center;
+  }
+  .opt-btn .icon { font-size: 44px; display: block; margin-bottom: 10px; }
+  .opt-btn.emergency { border-color: var(--danger); color: var(--danger); }
+  .opt-btn.wide { grid-column: span 2; }
+
+  .stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    margin: 30px 0;
+  }
+  .stepper button {
+    width: 76px; height: 76px;
+    font-size: 36px;
+    border-radius: 50%;
+    border: none;
+    background: var(--main);
+    color: white;
+    cursor: pointer;
+  }
+  .stepper .val { font-size: 47px; font-weight: bold; min-width: 50px; text-align: center; }
+
+  .keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    max-width: 260px;
+    margin: 0 auto 20px;
+  }
+  .keypad button {
+    padding: 20px 0;
+    font-size: 29px;
+    border-radius: 14px;
+    border: 1px solid #eee;
+    background: white;
+    cursor: pointer;
+  }
+  .room-display {
+    text-align: center;
+    font-size: 42px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    margin-bottom: 16px;
+    min-height: 40px;
+    color: var(--main);
+  }
+
+  .primary-btn {
+    display: block;
+    width: 100%;
+    padding: 17px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 3px 10px rgba(217,138,94,0.25);
+  }
+  .secondary-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background: white;
+    color: var(--main);
+    border: 2px solid var(--main);
+    border-radius: 16px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .back-btn {
+    display: block;
+    margin: 20px auto 0;
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 18px;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .summary-box {
+    background: var(--card);
+    color: var(--text);
+    border: 3px solid var(--main);
+    border-radius: 22px;
+    padding: 30px 22px;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 14px rgba(31,109,135,0.12);
+  }
+  .summary-box .to-staff {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--main);
+    margin-bottom: 16px;
+  }
+  .room-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 36px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    padding: 10px 28px;
+    border-radius: 14px;
+    margin-bottom: 18px;
+  }
+  .room-badge .room-badge-label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 0;
+    opacity: 0.9;
+    margin-bottom: 2px;
+  }
+  .summary-box .divider {
+    height: 1px;
+    background: #e5e0d5;
+    margin: 0 0 16px;
+  }
+  .summary-box .jp-title {
+    font-size: 29px;
+    font-weight: bold;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .summary-box .jp-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .summary-box .jp-line {
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--text);
+    background: #f4f0e6;
+    border: 1px solid #e5e0d5;
+    border-radius: 10px;
+    padding: 9px 14px;
+  }
+  .urgent-tag {
+    display: inline-block;
+    background: var(--danger);
+    color: white;
+    font-size: 17px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-top: 10px;
+  }
+
+  .address-note {
+    background: #fdf3ea;
+    border: 2px solid var(--accent);
+    border-radius: 14px;
+    padding: 14px 16px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--text);
+    line-height: 1.5;
+    margin-top: 6px;
+  }
+
+  .explain-box {
+    background: var(--card);
+    border: 2px solid var(--main);
+    border-radius: 20px;
+    padding: 28px 22px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 23px;
+    line-height: 1.6;
+  }
+  .placeholder-tag {
+    display: inline-block;
+    background: #eee;
+    color: #999;
+    font-size: 14px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-top: 12px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>おもてなしタップ</h1>
+  <p>ゲストが選ぶだけで、スタッフには日本語で伝わります</p>
+  <p id="facilityTag" style="font-size:14px; opacity:0.85; margin-top:6px;"></p>
+</header>
+
+<div class="lang-bar" id="langBar"></div>
+<div class="screen" id="screen"></div>
+
+<script>
+const T = {
+  chooseLang: { en: "Please choose your language", zh: "請選擇您的語言", ko: "언어를 선택해주세요", ja: "言語を選択してください" },
+  homeQuestion: { en: "How can we help?", zh: "需要什麼協助？", ko: "무엇을 도와드릴까요?", ja: "どのようなご用件でしょうか？" },
+  showStaff: { en: "Please show this screen to staff", zh: "請將此畫面出示給工作人員", ko: "이 화면을 직원에게 보여주세요", ja: "この画面をスタッフにお見せください" },
+  urgent: { en: "URGENT", zh: "緊急", ko: "긴급", ja: "至急" },
+  notUrgent: { en: "Not urgent", zh: "不緊急", ko: "급하지 않음", ja: "急ぎではない" },
+  isUrgent: { en: "Is this urgent?", zh: "這件事緊急嗎？", ko: "긴급한 사안인가요?", ja: "これは至急のご用件ですか？" },
+  roomNumber: { en: "Your room number", zh: "您的房號", ko: "객실 번호", ja: "お部屋番号" },
+  confirm: { en: "Confirm", zh: "確認", ko: "확인", ja: "確認" },
+  backHome: { en: "Start over", zh: "重新開始", ko: "처음으로", ja: "はじめから" },
+  backStep: { en: "Back", zh: "上一步", ko: "이전", ja: "戻る" },
+  howMany: { en: "How many?", zh: "需要幾個？", ko: "몇 개 필요하세요?", ja: "いくつ必要ですか？" },
+  close: { en: "OK", zh: "了解", ko: "확인", ja: "了解" },
+  askStaffNote: { en: "Staff will confirm details with you", zh: "詳細內容將由工作人員為您確認", ko: "자세한 내용은 직원이 안내해 드립니다", ja: "詳細はスタッフがご案内します" },
+  luggageAddressNote: { en: "Please show staff the address of your next destination (e.g. your next hotel's booking confirmation)", zh: "請向工作人員出示您下一個目的地的地址（例如下一間飯店的訂房確認）", ko: "다음 목적지 주소를 직원에게 보여주세요 (예: 다음 숙소의 예약 확인서 등)", ja: "次のご宿泊先の住所をスタッフにお見せください（例：次のホテルの予約確認書など）" },
+  peopleQuestion: { en: "Will the number of guests change?", zh: "入住人數是否會有變動？", ko: "투숙 인원이 변경되나요?", ja: "宿泊人数に変更はありますか？" },
+  same: { en: "Same", zh: "不變", ko: "동일", ja: "変更なし" },
+  more: { en: "More people", zh: "增加人數", ko: "인원 증가", ja: "人数が増える" },
+  fewer: { en: "Fewer people", zh: "減少人數", ko: "인원 감소", ja: "人数が減る" },
+  howManyPeople: { en: "How many people?", zh: "共幾位？", ko: "몇 명인가요?", ja: "何名になりますか？" },
+  arriveDate: { en: "Desired delivery date (Month/Day)", zh: "希望送達日期（月/日）", ko: "희망 배송일 (월/일)", ja: "希望送付日（月／日）" }
+};
+
+// ---- スプレッドシート連携（任意機能）----
+// 導入するホテルごとに一意なIDをここに設定する（Apps Script側の対応表のキーと一致させる）
+const HOTEL_ID = "comfort-toyama-ekimae";
+// Apps ScriptをWebアプリとしてデプロイして発行されたURLをここに貼り付ける。
+// 空のままなら送信処理はスキップされ、今まで通りlocalStorageのみで動作する（後方互換）。
+const ANALYTICS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbw_qr1blXphGN6oY112-h9BE5dPaLuh34_rBaVRjIf_nKlcD-xcVqvNXILcjomDS64j/exec";
+
+// ---- 営業デモ用：施設名の表示（任意）----
+// 特定施設向けにデモを送る際、ここに施設名を入れるとヘッダーに表示される。空文字なら何も表示しない。
+const FACILITY_NAME = "コンフォートホテル富山駅前";
+if (FACILITY_NAME) {
+  const facilityTagEl = document.getElementById("facilityTag");
+  if (facilityTagEl) facilityTagEl.textContent = FACILITY_NAME + " 運用テスト画面";
+}
+
+function genSessionId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+}
+
+// 投げっぱなしでスプレッドシートへイベント送信する。通信失敗・URL未設定でもアプリ本体は止めない。
+function sendAnalyticsEvent(eventType, payload) {
+  if (!ANALYTICS_WEBHOOK_URL) return;
+  try {
+    const body = JSON.stringify(Object.assign({ hotelId: HOTEL_ID, eventType, time: Date.now() }, payload));
+    fetch(ANALYTICS_WEBHOOK_URL, {
+      method: "POST",
+      mode: "no-cors", // Apps ScriptのWebアプリ制約上、no-cors+text/plainが一番安定する
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body
+    }).catch(() => {});
+  } catch (e) { /* 通信できない環境でもアプリ本体は継続 */ }
+}
+
+// カテゴリごとに「何を選んだか」を短いコードで表す（スプレッドシート上で集計しやすくするため）
+function analyticsKind(cat) {
+  const a = state.answers;
+  if (cat.id === "stay") return a.kind || "";
+  if (cat.id === "trouble") return a.issue || "";
+  if (cat.id === "taxi") return a.when || "";
+  if (cat.id === "luggage") return a.destArea || "";
+  if (cat.id === "emergency") return [a.issue, a.needsHospital, a.needsBandaid].filter(Boolean).join("/");
+  return "";
+}
+
+const languages = [
+  { code: "en", label: "English" },
+  { code: "zh", label: "中文(繁體)" },
+  { code: "ko", label: "한국어" },
+  { code: "ja", label: "日本語" },
+];
+
+// ---- fixed multilingual explanation texts ----
+const airconExplain = {
+  en: "We're sorry — this hotel uses central air conditioning, so the temperature can't be adjusted per room. We can lend you a fan or an extra blanket instead.",
+  zh: "非常抱歉，本飯店採用中央空調系統，無法個別調整每間房間的溫度。我們可以為您提供電風扇或額外的毛毯。",
+  ko: "죄송합니다. 저희 호텔은 중앙 냉난방 시스템을 사용하여 객실별로 온도를 조절할 수 없습니다. 대신 선풍기나 여분의 담요를 빌려드릴 수 있습니다.",
+  ja: "申し訳ございません。当施設は中央管理の空調のため、お部屋ごとの温度調整ができません。代わりに扇風機や毛布をお貸しいたします。"
+};
+const borrowFanLabel = { en: "Borrow a fan / blanket", zh: "借用電風扇／毛毯", ko: "선풍기·담요 대여", ja: "扇風機・毛布の貸し出し" };
+
+// NOTE: 断定的な回答にすること（「スタッフに聞いてください」だと曖昧なリクエストを誘発するため）。
+// コンフォートホテル富山駅前の実際の運用（ハラール非対応・持ち帰り不可）に合わせて書き換え済み。
+const halalExplain = {
+  en: "We're sorry, we do not offer halal-certified, halal-specific, or vegetarian-specific dishes at breakfast. Breakfast is served buffet-style, so please choose the dishes you're able to eat yourself. If you have food allergies, please tell our staff when you arrive at the dining hall.",
+  zh: "很抱歉，本飯店早餐並未提供清真認證、清真專用或素食專用餐點。早餐為自助式（buffet），請自行選擇您可食用的餐點。如有食物過敏，請於用餐時告知工作人員。",
+  ko: "죄송합니다, 저희 조식에는 할랄 인증, 할랄 전용, 채식 전용 메뉴가 제공되지 않습니다. 조식은 뷔페 형식으로 제공되므로 드실 수 있는 메뉴를 직접 선택해 주세요. 식품 알레르기가 있으시면 식당에서 직원에게 알려주세요.",
+  ja: "申し訳ございません、当施設の朝食ではハラール認証・ハラール対応、ベジタリアン対応のお料理はご用意しておりません。朝食はビュッフェ形式のため、お召し上がりいただけるお料理をご自身でお選びください。食物アレルギー等ございましたら、会場でスタッフにお申し付けください。"
+};
+const takeoutExplain = {
+  en: "We're sorry, breakfast may not be taken to your room. Breakfast is served in the dining hall from 6:30 to 9:30 (from 6:00 during busy periods).",
+  zh: "很抱歉，早餐無法帶回房間享用。早餐供應時間為 6:30～9:30（尖峰時段自 6:00 起提供），敬請於用餐區享用。",
+  ko: "죄송합니다, 조식은 객실로 가져가실 수 없습니다. 조식은 6:30~9:30에 제공됩니다 (혼잡 시간대에는 6:00부터 제공). 식당에서 드시기 바랍니다.",
+  ja: "申し訳ございません、朝食のお部屋へのお持ち帰りはできません。朝食は6:30〜9:30の提供です（混雑時は6:00頃より提供いたします）。会場にてお召し上がりください。"
+};
+// コンフォートホテル富山駅前の実際の運用：立山黒部アルペンルートの時刻表はスタッフに聞けば見せてもらえる
+const localInfoExplain = {
+  en: "If you'd like to see the Tateyama Kurobe Alpine Route timetable, please ask our staff — we're happy to show it to you.",
+  zh: "若您想查看立山黑部阿爾卑斯山脈路線的時刻表，請向工作人員洽詢，我們可以為您出示。",
+  ko: "다테야마 구로베 알펜루트 시간표를 보고 싶으시면 직원에게 말씀해 주세요. 보여드리겠습니다.",
+  ja: "立山黒部アルペンルートの時刻表をご覧になりたい場合は、スタッフにお声がけください。お見せいたします。"
+};
+
+// 締め出し（鍵を部屋に置いたまま外出）は選択肢を出さず、必ずスタッフが部屋まで同伴して解錠する前提の定型文にしている
+const lockedOutAnswerText = {
+  en: "A member of staff will come to accompany you to your room shortly to let you in. Please wait near your room.",
+  zh: "工作人員將盡快陪同您前往房間為您開門，請在房間附近稍候。",
+  ko: "직원이 곧 방까지 동행하여 문을 열어드리겠습니다. 방 근처에서 잠시 기다려 주세요.",
+  ja: "まもなくスタッフがお部屋までご案内し、鍵をお開けいたします。お部屋の近くで少々お待ちください。"
+};
+
+// 緊急対応（気分が悪い／怪我）は「病院の手配が必要か」で分岐し、不要な場合のみ絆創膏の要否を聞く。
+// どちらの答えも断定的な定型文をゲストに返し、汎用の3択（対応いたします／少々お待ちください／対応が難しいです）は使わない。
+const emergencyHospitalText = {
+  en: "Staff will arrange transportation to a hospital and come to assist you shortly. Please wait — someone is on their way.",
+  zh: "工作人員將為您安排前往醫院的交通，並盡快前來協助您。請稍候，我們馬上到。",
+  ko: "직원이 병원 이동을 도와드리기 위해 곧 찾아뵙겠습니다. 잠시만 기다려 주세요.",
+  ja: "スタッフが病院までの移動を手配し、まもなく伺います。少々お待ちください。"
+};
+const emergencyBandaidText = {
+  en: "We'll bring a band-aid to your room shortly.",
+  zh: "我們會盡快將OK繃送到您的房間。",
+  ko: "곧 밴드(반창고)를 객실로 가져다 드리겠습니다.",
+  ja: "まもなく絆創膏をお部屋にお届けします。"
+};
+const emergencyNoneText = {
+  en: "We hope you feel better soon. Please let us know if anything changes.",
+  zh: "祝您早日康復。如有任何變化，請隨時告知我們。",
+  ko: "빨리 쾌차하시길 바랍니다. 상황이 바뀌면 언제든지 알려주세요.",
+  ja: "お大事になさってください。何か変化がございましたらお知らせください。"
+};
+
+const genericStaffAnswers = [
+  { v: "ok", jp: "対応いたします", icon: "✅",
+    text: { en: "We'll take care of that.", zh: "我們會為您處理。", ko: "처리해 드리겠습니다.", ja: "対応いたします。" } },
+  { v: "wait", jp: "少々お待ちください", icon: "⏳",
+    text: { en: "One moment, please.", zh: "請稍候。", ko: "잠시만 기다려 주세요.", ja: "少々お待ちください。" } },
+  { v: "no", jp: "対応が難しいです、申し訳ございません", icon: "🙏",
+    text: { en: "We're sorry, this may be difficult.", zh: "很抱歉，這可能有困難。", ko: "죄송합니다, 어려울 수 있습니다.", ja: "申し訳ございません、対応が難しい状況です。" } }
+];
+
+// NOTE: 施設ごとの実際の部屋タイプ名・コードに置き換えて運用してください（導入時にカスタマイズする項目です）
+// 主要ハブ空港＋東北・中国地方を加えた8ブロック。ゲストは地名を読めなくても位置で選べる。
+// ラベルは「都市名（大きく・認知度優先）＋空港/地方名（小さく）」の構成にして文字量を抑え、
+// ボックス内に収まりきらない事故を避けている。座標は viewBox 0 0 300 660 の簡易配置で、正確な地形ではない。
+// 日本地図の形を意識した配置（右列＝北海道→東北→関東、左列＝中部→関西→中国→九州→沖縄）。
+// 地図上のラベルは英語表記、jpはスタッフ向けサマリー表示用の日本語名。
+const mapRegions = [
+  { v: "chitose", jp: "新千歳空港（札幌）", map: "Sapporo\n(New Chitose)", x:140, y:10, w:130, h:90 },
+  { v: "sendai", jp: "仙台空港（東北）", map: "Sendai\n(Tohoku)", x:150, y:112, w:110, h:78 },
+  { v: "tokyo", jp: "羽田・成田空港（東京）", map: "Tokyo\n(Haneda/Narita)", x:140, y:202, w:130, h:95 },
+  { v: "chubu", jp: "中部国際空港（名古屋）", map: "Nagoya\n(Centrair)", x:10, y:202, w:115, h:95 },
+  // 松本：立山黒部アルペンルートで長野側へ抜けるゲストからの荷物輸送依頼が多いため特別に追加
+  { v: "matsumoto", jp: "松本（長野・アルペンルート方面）", map: "Matsumoto\n(Nagano)", x:10, y:309, w:260, h:70 },
+  { v: "kansai", jp: "関西国際空港（大阪）", map: "Osaka\n(Kansai)", x:10, y:391, w:105, h:82 },
+  { v: "chugoku", jp: "広島空港（中国地方）", map: "Hiroshima\n(Chugoku)", x:10, y:485, w:125, h:82 },
+  { v: "fukuoka", jp: "福岡空港（九州）", map: "Fukuoka\n(Kyushu)", x:10, y:579, w:110, h:88 },
+  { v: "naha", jp: "那覇空港（沖縄）", map: "Okinawa\n(Naha)", x:10, y:679, w:80, h:50 }
+];
+
+// コンフォートホテル富山駅前の実際の部屋タイプ（PMSコード：NDE/NDS/NTE/NQE）
+const roomTypeOptions = [
+  { v: "nde", jp: "ダブルエコノミー（1ベッド）", icon: "🛏️", label: { en: "Double Economy (1 bed)", zh: "雙人經濟房（1張床）", ko: "더블 이코노미 (침대 1개)", ja: "ダブルエコノミー（1ベッド）" } },
+  { v: "nds", jp: "ダブルスタンダード（1ベッド）", icon: "🛏️", label: { en: "Double Standard (1 bed)", zh: "雙人標準房（1張床）", ko: "더블 스탠다드 (침대 1개)", ja: "ダブルスタンダード（1ベッド）" } },
+  { v: "nte", jp: "ツインエコノミー（2ベッド）", icon: "🛏️🛏️", label: { en: "Twin Economy (2 beds)", zh: "雙床經濟房（2張床）", ko: "트윈 이코노미 (침대 2개)", ja: "ツインエコノミー（2ベッド）" } },
+  { v: "nqe", jp: "クイーンエコノミー（1ベッド）", icon: "🛏️", label: { en: "Queen Economy (1 bed)", zh: "大床經濟房（1張床）", ko: "퀸 이코노미 (침대 1개)", ja: "クイーンエコノミー（1ベッド）" } }
+];
+
+// コンフォートホテル富山駅前の実際の料金体系：1名1,000円／2名以上1,500円（1時間あたり）
+const latePeopleOptions = [
+  { v: "1", jp: "1名", icon: "🧍", label: { en: "1 guest", zh: "1位", ko: "1명", ja: "1名" } },
+  { v: "2", jp: "2名以上", icon: "🧍🧍", label: { en: "2 or more guests", zh: "2位以上", ko: "2명 이상", ja: "2名以上" } }
+];
+
+function lateCheckoutAnswerText(yen) {
+  return {
+    en: `The extra charge for late checkout is ¥${yen.toLocaleString()}.`,
+    zh: `延遲退房的額外費用為 ¥${yen.toLocaleString()}。`,
+    ko: `레이트 체크아웃 추가 요금은 ¥${yen.toLocaleString()}입니다.`,
+    ja: `レイトチェックアウトの追加料金は ¥${yen.toLocaleString()} です。`
+  };
+}
+
+// kind: "extend"（延泊料金） / "roomchange"（部屋タイプ変更の料金） — 何の金額かを明示するため文言を分ける
+// 延泊・部屋タイプ変更は満室で対応できないケースがあるため、料金入力の前に「ご用意できるか」を確認する
+function roomUnavailableText(kind) {
+  const subject = kind === "extend"
+    ? { en: "an extra night", zh: "加住一晚的空房", ko: "연박 가능한 객실", ja: "延泊分のお部屋" }
+    : { en: "the room type you requested", zh: "您想更改的房型", ko: "요청하신 객실 타입", ja: "ご希望のお部屋タイプ" };
+  return {
+    en: `We're very sorry — we don't have availability for ${subject.en} at this time.`,
+    zh: `非常抱歉，目前沒有可提供${subject.zh}的空房。`,
+    ko: `죄송합니다. 현재 ${subject.ko}이(가) 없습니다.`,
+    ja: `大変申し訳ございません。現在、${subject.ja}のご用意がございません。`
+  };
+}
+
+function feeAnswerText(yen, kind) {
+  if (yen === 0) {
+    return { en: "There is no additional charge.", zh: "無需支付額外費用。", ko: "추가 요금은 없습니다.", ja: "追加料金はございません。" };
+  }
+  const subject = kind === "extend"
+    ? { en: "for your extra night(s)", zh: "加住的費用", ko: "연박 요금", ja: "延泊分の料金" }
+    : { en: "for the room change", zh: "房型變更費用", ko: "객실 변경 요금", ja: "お部屋タイプ変更の料金" };
+  return {
+    en: `The charge ${subject.en} is ¥${yen.toLocaleString()}.`,
+    zh: `${subject.zh}為 ¥${yen.toLocaleString()}。`,
+    ko: `${subject.ko}은(는) ¥${yen.toLocaleString()}입니다.`,
+    ja: `${subject.ja}は ¥${yen.toLocaleString()} です。`
+  };
+}
+
+// paymentMethod: "card"（事前カード決済 → 差額をカードへ返金） / "onsite"（現地精算 → フロントで現金にて返金）
+function cancelFeeAnswerText(yen, paymentMethod) {
+  if (yen === 0) {
+    return { en: "There is no cancellation fee — it's free.", zh: "無需支付取消費用，完全免費。", ko: "취소 수수료는 없습니다. 무료입니다.", ja: "キャンセル料はかかりません。無料です。" };
+  }
+  if (paymentMethod === "card") {
+    return {
+      en: `The cancellation fee is ¥${yen.toLocaleString()}. The remaining balance will be refunded to your card.`,
+      zh: `取消費用為 ¥${yen.toLocaleString()}。剩餘款項將退回至您的信用卡。`,
+      ko: `취소 수수료는 ¥${yen.toLocaleString()}입니다. 남은 금액은 카드로 환불됩니다.`,
+      ja: `キャンセル料は ¥${yen.toLocaleString()} です。残額はカードへ返金いたします。`
+    };
+  }
+  if (paymentMethod === "onsite") {
+    return {
+      en: `The cancellation fee is ¥${yen.toLocaleString()}. Please come to the front desk to receive the remaining balance in cash.`,
+      zh: `取消費用為 ¥${yen.toLocaleString()}。請至櫃檯領取以現金退還的餘額。`,
+      ko: `취소 수수료는 ¥${yen.toLocaleString()}입니다. 남은 금액은 프런트에서 현금으로 받으실 수 있습니다.`,
+      ja: `キャンセル料は ¥${yen.toLocaleString()} です。残額はフロントにて現金でお返しいたします。`
+    };
+  }
+  return {
+    en: `The cancellation fee is ¥${yen.toLocaleString()}.`,
+    zh: `取消費用為 ¥${yen.toLocaleString()}。`,
+    ko: `취소 수수료는 ¥${yen.toLocaleString()}입니다.`,
+    ja: `キャンセル料は ¥${yen.toLocaleString()} です。`
+  };
+}
+
+// 集荷は毎日1回、締切時刻(既定18時)という前提の条件分岐。
+// 北海道・九州・沖縄は遠方のため+1日、さらに本日の集荷締切を過ぎていればもう+1日される。
+// 締切時刻・遠方地域は貴施設の配送業者の規定に合わせて変更してください
+const LUGGAGE_PICKUP_CUTOFF_HOUR = 18;
+const luggageFarRegions = ["chitose", "fukuoka", "naha"];
+function luggageMinDays(destAreaVal) {
+  return luggageFarRegions.includes(destAreaVal) ? 2 : 1;
+}
+function addDaysMMDD(days) {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return { mm, dd, str: mm + dd };
+}
+function luggageEarliestDate(destAreaVal) {
+  const minDays = luggageMinDays(destAreaVal);
+  const pastCutoff = new Date().getHours() >= LUGGAGE_PICKUP_CUTOFF_HOUR;
+  const totalDays = minDays + (pastCutoff ? 1 : 0);
+  return Object.assign({ pastCutoff, totalDays }, addDaysMMDD(totalDays));
+}
+function relativeDayLabelJp(days) {
+  if (days === 1) return "明日";
+  if (days === 2) return "明後日";
+  return `${days}日後`;
+}
+function relativeDayLabel(days) {
+  if (days === 1) return { en: "tomorrow", zh: "明天", ko: "내일", ja: "明日" };
+  if (days === 2) return { en: "the day after tomorrow", zh: "後天", ko: "모레", ja: "明後日" };
+  return { en: `in ${days} days`, zh: `${days}天後`, ko: `${days}일 후`, ja: `${days}日後` };
+}
+function luggageCutoffNoteText(pastCutoff) {
+  if (pastCutoff) {
+    return {
+      en: `Today's ${LUGGAGE_PICKUP_CUTOFF_HOUR}:00 pickup has already closed (this will go out with tomorrow's pickup).`,
+      zh: `今日 ${LUGGAGE_PICKUP_CUTOFF_HOUR}:00 的收件已截止（將於明日收件寄出）。`,
+      ko: `오늘 ${LUGGAGE_PICKUP_CUTOFF_HOUR}시 수거는 마감되었습니다 (내일 수거분으로 발송됩니다).`,
+      ja: `本日${LUGGAGE_PICKUP_CUTOFF_HOUR}時の集荷は締め切りました（明日の集荷分としての発送になります）。`
+    };
+  }
+  return {
+    en: `Still in time for today's pickup (by ${LUGGAGE_PICKUP_CUTOFF_HOUR}:00).`,
+    zh: `仍趕得上今日 ${LUGGAGE_PICKUP_CUTOFF_HOUR}:00 前的收件。`,
+    ko: `오늘 ${LUGGAGE_PICKUP_CUTOFF_HOUR}시까지의 수거에 맞출 수 있습니다.`,
+    ja: `本日${LUGGAGE_PICKUP_CUTOFF_HOUR}時までの集荷にまだ間に合います。`
+  };
+}
+function luggageMinDateNoteText(earliest) {
+  const rel = relativeDayLabel(earliest.totalDays);
+  return {
+    en: `Please choose ${earliest.mm}/${earliest.dd} (${rel.en}) or later. (Today's pickup cutoff is ${LUGGAGE_PICKUP_CUTOFF_HOUR}:00.)`,
+    zh: `請選擇 ${earliest.mm}/${earliest.dd}（${rel.zh}）以後的日期。（今日收件截止時間為 ${LUGGAGE_PICKUP_CUTOFF_HOUR}:00。）`,
+    ko: `${earliest.mm}/${earliest.dd}(${rel.ko}) 이후로 선택해 주세요. (오늘 수거 마감 시간은 ${LUGGAGE_PICKUP_CUTOFF_HOUR}시입니다.)`,
+    ja: `${earliest.mm}/${earliest.dd}（${rel.ja}）以降でお選びください。（本日の集荷締切は${LUGGAGE_PICKUP_CUTOFF_HOUR}時です。）`
+  };
+}
+const backToEarliestLabel = { en: "← Back to suggested date", zh: "← 返回建議日期", ko: "← 추천 날짜로 돌아가기", ja: "← おすすめの日付に戻る" };
+
+function luggageFeeAnswerText(yen) {
+  if (yen === 0) {
+    return { en: "There is no charge for this delivery.", zh: "此運送無需支付費用。", ko: "이 배송에는 요금이 없습니다.", ja: "この配送に料金はかかりません。" };
+  }
+  return {
+    en: `The shipping fee is ¥${yen.toLocaleString()}. Please pay now — we'll give you a copy of the shipping slip. Thank you!`,
+    zh: `運費為 ¥${yen.toLocaleString()}。請現在付款，我們將提供您送貨單存根。謝謝您！`,
+    ko: `배송 요금은 ¥${yen.toLocaleString()}입니다. 지금 결제해 주시면 송장 사본을 드리겠습니다. 감사합니다!`,
+    ja: `配送料は ¥${yen.toLocaleString()} です。今お支払いいただき、伝票の控えをお渡しします。ありがとうございます！`
+  };
+}
+// 荷物輸送：本日発送する場合の「少々お待ちください（輸送費を計算します）」案内
+const luggageWaitText = {
+  en: "We'll calculate the shipping fee now — please wait a moment.",
+  zh: "我們現在為您計算運費，請稍候。",
+  ko: "지금 배송 요금을 계산해 드리겠습니다. 잠시만 기다려 주세요.",
+  ja: "ただいま配送料を計算いたします。少々お待ちください。"
+};
+// 荷物輸送：後日発送する場合の案内（今は支払い不要）
+const luggageLaterText = {
+  en: "No problem — whenever you're ready to send it, please bring your luggage to the front desk and pay the shipping fee at that time.",
+  zh: "沒問題，準備好寄送時，請攜帶行李至櫃檯，並於當時支付運費。",
+  ko: "괜찮습니다. 보내실 준비가 되면 수하물을 프런트로 가져오셔서 그때 배송 요금을 지불해 주세요.",
+  ja: "かしこまりました。ご準備ができましたら、荷物をフロントまでお持ちいただき、その際に配送料をお支払いください。"
+};
+
+function lendAnswerText(availableItems, unavailableItems) {
+  const sep = { en: ", ", zh: "、", ko: ", ", ja: "、" };
+  const texts = {};
+  ["en", "zh", "ko", "ja"].forEach(lang => {
+    const parts = [];
+    if (availableItems.length) {
+      const list = availableItems.map(o => o.label[lang]).join(sep[lang]);
+      if (lang === "en") parts.push(`We can prepare: ${list}.`);
+      if (lang === "zh") parts.push(`我們可以為您準備：${list}。`);
+      if (lang === "ko") parts.push(`준비해 드리겠습니다: ${list}.`);
+      if (lang === "ja") parts.push(`ご用意いたします：${list}。`);
+    }
+    if (unavailableItems.length) {
+      const list = unavailableItems.map(o => o.label[lang]).join(sep[lang]);
+      const plural = unavailableItems.length > 1;
+      if (lang === "en") parts.push(`Sorry, ${list} ${plural ? "are" : "is"} currently being used by another guest. Please check with us again later — ${plural ? "they" : "it"} may become available once returned.`);
+      if (lang === "zh") parts.push(`很抱歉，${list} 目前有其他房客正在使用。請稍後再次詢問我們，歸還後或許就能為您提供。`);
+      if (lang === "ko") parts.push(`죄송합니다, ${list}은(는) 현재 다른 투숙객이 사용 중입니다. 반납되면 다시 대여해 드릴 수 있으니 잠시 후 다시 문의해 주세요.`);
+      if (lang === "ja") parts.push(`申し訳ございません、${list}は現在他のお客様がご利用中です。返却され次第ご案内できる場合がございますので、後ほど改めてお尋ねください。`);
+    }
+    texts[lang] = parts.join("\n");
+  });
+  return texts;
+}
+
+// タクシー：今すぐ／時刻指定どちらも「業者へ確認→ゲストに待ってもらう→可否/到着分数を伝える→ゲストがOK/NGを選ぶ→スタッフに結果を伝える」という同じスキームを使う
+const taxiWaitText = {
+  en: "We'll call the taxi company now — please wait a moment.",
+  zh: "我們將立即致電計程車公司，請稍候。",
+  ko: "택시 회사에 바로 연락드리겠습니다. 잠시만 기다려 주세요.",
+  ja: "ただいまタクシー会社に確認いたします。少々お待ちください。"
+};
+const taxiUnavailableText = {
+  en: "We're sorry, we're unable to arrange a taxi at this time.",
+  zh: "非常抱歉，目前無法為您安排計程車。",
+  ko: "죄송합니다, 현재 택시를 수배해 드릴 수 없습니다.",
+  ja: "申し訳ございません、現在タクシーの手配ができません。"
+};
+function taxiEtaConfirmText(minutes) {
+  return {
+    en: `The taxi can arrive in about ${minutes} minutes at the earliest. Shall we go ahead and book it?`,
+    zh: `計程車最快約 ${minutes} 分鐘後可抵達。是否要為您安排？`,
+    ko: `택시는 최소 약 ${minutes}분 후에 도착 가능합니다. 예약해 드릴까요?`,
+    ja: `タクシーは早くて約${minutes}分後に到着可能です。手配してよろしいですか？`
+  };
+}
+const taxiYesLabel = { en: "Yes, please book it", zh: "是，請幫我安排", ko: "네, 예약해 주세요", ja: "はい、お願いします" };
+const taxiNoLabel = { en: "No, that's fine", zh: "不用了，謝謝", ko: "아니요, 괜찮습니다", ja: "いいえ、結構です" };
+
+const categories = [
+  {
+    id: "lend",
+    icon: "🧺",
+    label: { en: "Borrow an Item", zh: "借用物品", ko: "물품 대여", ja: "貸出品" },
+    steps: [
+      { type: "multiItem", key: "items",
+        q: { en: "What would you like to borrow? (choose quantity for each)", zh: "您需要借用什麼？（請選擇各項數量）", ko: "무엇을 몇 개 대여하시겠어요? (항목별로 선택)", ja: "何を、いくつ借りたいですか？（各項目の数量をお選びください）" },
+        options: [
+          { v: "charger", jp: "スマホ充電器", icon:"🔋", label: { en:"Phone Charger", zh:"手機充電器", ko:"휴대폰 충전기", ja:"スマホ充電器" } },
+          { v: "adapter", jp: "変換プラグ・変圧器", icon:"🔌", label: { en:"Power Adapter", zh:"轉接頭/變壓器", ko:"어댑터", ja:"変換プラグ・変圧器" } },
+          { v: "towel", jp: "追加タオル", icon:"🧺", label: { en:"Extra Towel", zh:"加毛巾", ko:"수건 추가", ja:"追加タオル" } },
+          { v: "toothbrush", jp: "歯ブラシ", icon:"🪥", label: { en:"Toothbrush", zh:"牙刷", ko:"칫솔", ja:"歯ブラシ" } },
+          { v: "fan", jp: "小型扇風機", icon:"🌀", label: { en:"Fan", zh:"電風扇", ko:"선풍기", ja:"小型扇風機" } },
+          { v: "blanket", jp: "毛布", icon:"🛏️", label: { en:"Blanket", zh:"毛毯", ko:"담요", ja:"毛布" } },
+          { v: "pillow", jp: "枕", icon:"🛌", label: { en:"Pillow", zh:"枕頭", ko:"베개", ja:"枕" } },
+          { v: "footpillow", jp: "フットピロー", icon:"🦶", label: { en:"Foot Pillow", zh:"腳枕", ko:"발베개", ja:"フットピロー" } },
+          { v: "iron", jp: "アイロン", icon:"👔", label: { en:"Iron", zh:"熨斗", ko:"다리미", ja:"アイロン" } }
+        ]
+      },
+      { type: "room", key: "room" }
+    ],
+    summary: (a, opt, cat) => {
+      const options = cat.steps.find(s => s.type === "multiItem").options;
+      const chosen = options.filter(o => a.items && a.items[o.v] > 0);
+      const lines = chosen.map(o => `${o.icon} ${o.jp} × ${a.items[o.v]}`);
+      return ["貸出リクエスト", ...lines];
+    }
+  },
+  {
+    id: "stay",
+    icon: "📅",
+    label: { en: "Stay / Room Change", zh: "住宿天數／房型變更", ko: "숙박·객실 변경", ja: "宿泊・お部屋の変更" },
+    steps: [
+      { type: "choice", key: "kind",
+        q: { en: "What would you like?", zh: "您需要什麼？", ko: "무엇을 원하시나요?", ja: "どのようなご用件ですか？" },
+        options: [
+          { v: "late", jp: "レイトチェックアウト", icon:"⏰", label:{ en:"Late Checkout", zh:"延遲退房", ko:"레이트 체크아웃", ja:"レイトチェックアウト" } },
+          { v: "extend", jp: "延泊", icon:"📅", label:{ en:"Extend Stay (extra night)", zh:"延長住宿", ko:"연박", ja:"延泊" } },
+          { v: "roomchange", jp: "部屋タイプ変更", icon:"🔄", label:{ en:"Change Room Type", zh:"更改房型", ko:"객실 타입 변경", ja:"部屋タイプ変更" } },
+          { v: "cancel", jp: "キャンセル・減泊について", icon:"🚫", label:{ en:"Cancel / Reduce Nights", zh:"取消／減少住宿晚數", ko:"취소·숙박일 단축", ja:"キャンセル・減泊について" } }
+        ]
+      },
+    ],
+    summary: (a) => {
+      const kind = a.kind;
+      const peopleText = a.peopleMode === "same" ? "人数変更なし"
+        : a.peopleMode === "more" ? `人数 +${a.peopleCount}名`
+        : a.peopleMode === "fewer" ? `人数 -${a.peopleCount}名` : "";
+      if (kind === "late") return ["レイトチェックアウト希望", `+${a.amount}時間`, a.lateCheckoutPeople === "2" ? "2名以上" : "1名"];
+      if (kind === "extend") return ["延泊希望", `+${a.amount}泊`, ...(peopleText ? [peopleText] : [])];
+      if (kind === "roomchange") {
+        const rt = state.selectedOpt.roomType ? state.selectedOpt.roomType.jp : "未選択";
+        return ["部屋タイプ変更のご相談", rt];
+      }
+      if (kind === "cancel") return ["キャンセル・減泊のご相談", `-${a.amount}泊`];
+    }
+  },
+  {
+    id: "trouble",
+    icon: "⚠️",
+    label: { en: "Room Issue", zh: "客房問題", ko: "객실 문제", ja: "お部屋のトラブル" },
+    steps: [
+      { type: "choice", key: "issue",
+        q: { en: "What's the issue?", zh: "發生了什麼問題？", ko: "어떤 문제인가요?", ja: "どのような問題ですか？" },
+        options: [
+          { v: "hotwater", jp: "お湯が出ない", icon:"🚿", label:{ en:"No hot water", zh:"沒有熱水", ko:"온수가 안 나와요", ja:"お湯が出ない" } },
+          { v: "aircon", jp: "エアコンの温度調整ができない", icon:"🌡️", label:{ en:"Can't adjust room temperature", zh:"無法調整空調溫度", ko:"에어컨 온도 조절 불가", ja:"エアコンの温度調整ができない" } },
+          { v: "key", jp: "鍵（カードキー）が反応しない", icon:"🔑", label:{ en:"Key card not working", zh:"房卡無法開門", ko:"카드키가 안 열려요", ja:"鍵（カードキー）が反応しない" } },
+          { v: "lockedout", jp: "締め出された（鍵を部屋に置いたまま外出）", icon:"🚪", label:{ en:"Locked out (key left inside)", zh:"被反鎖在外（鑰匙留在房內）", ko:"방에 열쇠를 두고 나와 잠겼어요", ja:"締め出された（鍵を部屋に置いたまま外出）" } }
+        ]
+      },
+      { type: "urgency", key: "urgent" },
+      { type: "room", key: "room" }
+    ],
+    summary: (a, opt) => ["客室トラブル", opt.jp]
+  },
+  {
+    id: "breakfast",
+    icon: "🍳",
+    faq: true,
+    label: { en: "Breakfast Questions", zh: "早餐相關問題", ko: "조식 관련 문의", ja: "朝食に関するご質問" },
+    questions: [
+      { v: "halal", icon: "🕌", label: { en: "Halal / Dietary restrictions", zh: "清真／飲食禁忌", ko: "할랄·식이 제한", ja: "ハラール対応／食事制限について" }, answer: halalExplain, placeholder: false },
+      { v: "takeout", icon: "🍱", label: { en: "Taking breakfast to your room", zh: "早餐可否帶回房間", ko: "조식 객실로 가져가기", ja: "朝食をお部屋に持ち帰る" }, answer: takeoutExplain, placeholder: false }
+    ]
+  },
+  {
+    id: "taxi",
+    icon: "🚕",
+    label: { en: "Call a Taxi", zh: "叫計程車", ko: "택시 호출", ja: "タクシーを呼ぶ" },
+    steps: [
+      { type: "choice", key: "when",
+        q: { en: "When do you need it?", zh: "您需要什麼時候的車？", ko: "언제 필요하신가요?", ja: "いつご利用になりますか？" },
+        options: [
+          { v: "now", jp: "今すぐ", icon:"⚡", label:{ en:"Right now", zh:"現在", ko:"지금 바로", ja:"今すぐ" } },
+          { v: "time", jp: "時刻を指定", icon:"🕐", label:{ en:"Specify a time", zh:"指定時間", ko:"시간 지정", ja:"時刻を指定" } }
+        ]
+      },
+      { type: "stepper", key: "cars",
+        q: { en: "How many taxis do you need?", zh: "您需要幾輛計程車？", ko: "택시가 몇 대 필요하신가요?", ja: "タクシーは何台必要ですか？" } },
+      { type: "room", key: "room" }
+    ],
+    summary: (a) => {
+      let whenText = "今すぐ";
+      if (a.when === "time") {
+        const dateText = a.date && a.date.length === 4 ? `${a.date.slice(0,2)}/${a.date.slice(2,4)} ` : "";
+        const timeText = a.time && a.time.length === 4 ? `${a.time.slice(0,2)}:${a.time.slice(2,4)}` : "";
+        whenText = `日時指定 ${dateText}${timeText}`.trim();
+      }
+      return ["タクシー配車依頼", whenText, `${a.cars}台`];
+    }
+  },
+  {
+    id: "luggage",
+    icon: "🧳",
+    label: { en: "Luggage Forwarding", zh: "行李運送", ko: "수하물 운송", ja: "荷物の配送" },
+    steps: [
+      // まず「今すぐ手配するか」を聞く。まだ決めていないゲストに住所や個数を聞いても無駄なので、
+      // ここで「いいえ」ならこの先の質問を全部スキップして「後で来てね」の案内だけ出す
+      { type: "choice", key: "readyNow",
+        q: { en: "Would you like to arrange this now?", zh: "您現在要安排寄送嗎？", ko: "지금 접수하시겠어요?", ja: "今すぐ手配なさいますか？" },
+        options: [
+          { v: "yes", jp: "はい、今すぐ手配する", icon: "✅", label: { en: "Yes, now", zh: "是，現在辦理", ko: "네, 지금요", ja: "はい、今すぐ手配する" } },
+          { v: "notyet", jp: "まだ決めていない", icon: "🕐", label: { en: "Not yet / later", zh: "還沒決定／稍後", ko: "아직 아니요·나중에", ja: "まだ決めていない" } }
+        ]
+      },
+      // 地名を読めない外国人でも位置をタップするだけで選べるよう地図形式にしている。
+      // 正確な住所・電話番号・受取人名はスタッフが対面で確認し、送り状はスタッフが作成する
+      { type: "mapArea", key: "destArea",
+        q: { en: "Where should we send it? (tap the nearest airport)", zh: "行李要寄送到哪裡？（請點選最近的機場）", ko: "어디로 보내드릴까요? (가까운 공항을 선택하세요)", ja: "どちらへお送りしますか？（最寄りの空港をタップしてください）" } },
+      { type: "arrivalChoice", key: "arriveDate" },
+      { type: "choice", key: "arriveTime",
+        q: { en: "Preferred time of arrival?", zh: "希望送達的時段？", ko: "희망 도착 시간대는?", ja: "希望到着時間帯は？" },
+        options: [
+          { v: "morning", jp: "午前中", icon:"🌅", label:{ en:"Morning", zh:"上午", ko:"오전", ja:"午前中" } },
+          { v: "afternoon", jp: "午後", icon:"☀️", label:{ en:"Afternoon", zh:"下午", ko:"오후", ja:"午後" } },
+          { v: "evening", jp: "夜", icon:"🌙", label:{ en:"Evening", zh:"晚上", ko:"저녁", ja:"夜" } },
+          { v: "any", jp: "指定なし", icon:"🕐", label:{ en:"No preference", zh:"不指定", ko:"상관없음", ja:"指定なし" } }
+        ]
+      },
+      { type: "stepper", key: "bagCount",
+        q: { en: "How many bags would you like us to send?", zh: "您需要寄送幾件行李？", ko: "몇 개의 수하물을 보내드릴까요?", ja: "荷物はいくつお送りしますか？" } },
+      { type: "room", key: "room" }
+    ],
+    summary: (a) => {
+      if (a.readyNow === "notyet") return ["荷物輸送：本人の希望により後日受付（まだ内容未確定）"];
+      const area = state.selectedOpt.destArea ? state.selectedOpt.destArea.jp : "未選択";
+      const time = state.selectedOpt.arriveTime ? state.selectedOpt.arriveTime.jp : "";
+      const date = a.arriveDate && a.arriveDate.length === 4 ? a.arriveDate.slice(0,2) + "/" + a.arriveDate.slice(2,4) : "未指定";
+      return ["荷物輸送依頼", `送り先：${area}`, `着日 ${date}${time ? " " + time : ""}`, `個数：${a.bagCount}個`];
+    }
+  },
+  {
+    id: "area",
+    icon: "🚌",
+    staticInfo: true,
+    label: { en: "Local Info / Timetable", zh: "周邊資訊／時刻表", ko: "주변 정보·시간표", ja: "周辺情報／時刻表" },
+    content: localInfoExplain,
+    placeholder: false
+  },
+  {
+    id: "emergency",
+    icon: "🚨",
+    label: { en: "Emergency / Not feeling well", zh: "緊急狀況／身體不適", ko: "긴급 상황·몸이 아파요", ja: "緊急・体調不良" },
+    emergency: true,
+    // 気分が悪い／怪我のみを想定。病院手配が要るかどうかで分岐し、不要な場合だけ絆創膏の要否を聞く。
+    steps: [
+      { type: "choice", key: "issue",
+        q: { en: "What's happening?", zh: "發生了什麼事？", ko: "무슨 일인가요?", ja: "どうされましたか？" },
+        options: [
+          { v: "sick", jp: "気分が悪い", icon:"🤒", label:{ en:"Feeling unwell", zh:"身體不適", ko:"몸이 안 좋아요", ja:"気分が悪い" } },
+          { v: "injury", jp: "怪我をした", icon:"🩹", label:{ en:"Injury", zh:"受傷了", ko:"다쳤어요", ja:"怪我をした" } }
+        ]
+      },
+      { type: "choice", key: "needsHospital",
+        q: { en: "Would you like us to arrange transportation to a hospital?", zh: "需要為您安排前往醫院的交通嗎？", ko: "병원 이동을 도와드릴까요?", ja: "病院までの移動をお手伝いしましょうか？" },
+        options: [
+          { v: "yes", jp: "はい、病院へ", icon:"🚑", label:{ en:"Yes, please", zh:"是，需要", ko:"네, 부탁드려요", ja:"はい、お願いします" } },
+          { v: "no", jp: "いいえ、大丈夫です", icon:"🙅", label:{ en:"No, that's okay", zh:"不用了", ko:"아니요, 괜찮아요", ja:"いいえ、大丈夫です" } }
+        ]
+      },
+      { type: "choice", key: "needsBandaid",
+        q: { en: "Would you like a band-aid?", zh: "需要OK繃嗎？", ko: "밴드(반창고)가 필요하신가요?", ja: "絆創膏は必要ですか？" },
+        options: [
+          { v: "yes", jp: "はい、お願いします", icon:"🩹", label:{ en:"Yes, please", zh:"是，需要", ko:"네, 부탁드려요", ja:"はい、お願いします" } },
+          { v: "no", jp: "いいえ、大丈夫です", icon:"🙅", label:{ en:"No, that's okay", zh:"不用了", ko:"아니요, 괜찮아요", ja:"いいえ、大丈夫です" } }
+        ]
+      },
+      { type: "room", key: "room" }
+    ],
+    summary: (a, opt) => {
+      const lines = ["🚨 体調不良・お怪我のご相談", opt.jp];
+      if (a.needsHospital === "yes") lines.push("病院の手配を希望");
+      else if (a.needsBandaid === "yes") lines.push("絆創膏をご希望");
+      else if (a.needsHospital === "no") lines.push("病院・絆創膏いずれも不要とのこと");
+      lines.push("至急");
+      return lines;
+    }
+  }
+];
+
+let state = { screen: "home", lang: null, catId: null, stepIndex: 0, answers: {}, selectedOpt: {}, explain: null, historyLogged: false };
+
+function t(obj) { return obj[state.lang] || obj.en; }
+
+// ---- リクエスト履歴（この端末のブラウザ内にのみ保存。サーバーなし、簡易ログ用） ----
+const HISTORY_KEY = "hrb_history_v1";
+const HISTORY_MAX = 1000; // 古いものから自動で切り捨てる
+
+function loadHistory() {
+  try {
+    const raw = localStorage.getItem(HISTORY_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return []; // localStorageが使えない環境でもアプリ本体は動作継続させる
+  }
+}
+function saveHistoryEntry(entry) {
+  try {
+    const list = loadHistory();
+    list.unshift(entry);
+    if (list.length > HISTORY_MAX) list.length = HISTORY_MAX;
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+  } catch (e) { /* 保存できなくてもアプリは継続 */ }
+}
+function clearHistory() {
+  try { localStorage.removeItem(HISTORY_KEY); } catch (e) {}
+}
+function exportHistoryCsv(list) {
+  const csvEscape = (s) => `"${String(s == null ? "" : s).replace(/"/g, '""')}"`;
+  const header = ["日時", "カテゴリ", "詳細", "部屋番号", "至急", "回答(英語)"].map(csvEscape).join(",");
+  const rows = list.map(e => {
+    const d = new Date(e.time);
+    const dateStr = `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,"0")}/${String(d.getDate()).padStart(2,"0")} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
+    const detail = (e.lines || []).slice(1).join(" / ");
+    return [dateStr, (e.lines && e.lines[0]) || "", detail, e.room || "", e.urgent ? "至急" : "", e.answerEn || ""].map(csvEscape).join(",");
+  });
+  const csv = "﻿" + [header, ...rows].join("\r\n"); // BOM付きでExcelでも文字化けしないようにする
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  const now = new Date();
+  a.download = `request_history_${now.getFullYear()}${String(now.getMonth()+1).padStart(2,"0")}${String(now.getDate()).padStart(2,"0")}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function renderLangBar() {
+  const bar = document.getElementById("langBar");
+  bar.innerHTML = "";
+  languages.forEach(l => {
+    const btn = document.createElement("button");
+    btn.className = "lang-btn" + (state.lang === l.code ? " active" : "");
+    btn.textContent = l.label;
+    btn.onclick = () => { state.lang = l.code; state.screen = "home"; render(); };
+    bar.appendChild(btn);
+  });
+}
+
+function goHome() {
+  state.screen = "home"; state.catId = null; state.stepIndex = 0; state.answers = {}; state.selectedOpt = {}; state.explain = null;
+  state.peopleStep = false; state.staffAmount = undefined; state.lendUnavailable = {}; state.customDateMode = false; state.pendingCancelYen = undefined;
+  state.taxiEtaMinutes = undefined; state.pendingTaxiMinutes = undefined; state.taxiGuestAccepted = undefined;
+  state.historyLogged = false; state.lastAmountYen = undefined; state.lastUnavailableItems = undefined;
+  render();
+}
+
+function startCategory(cat) {
+  // 離脱率分析用：カテゴリを開いた時点で毎回「開始」イベントを送る（完了イベントと同じsessionIdで後から突き合わせる）
+  state.sessionId = genSessionId();
+  state.flowStartTime = Date.now();
+  sendAnalyticsEvent("start", { category: cat.id, sessionId: state.sessionId });
+
+  if (cat.staticInfo) {
+    state.screen = "explain";
+    state.explain = { text: cat.content, placeholder: cat.placeholder, action: null, backTo: "home" };
+    render();
+    return;
+  }
+  if (cat.faq) {
+    state.screen = "faqlist";
+    state.catId = cat.id;
+    render();
+    return;
+  }
+  state.screen = "flow"; state.catId = cat.id; state.stepIndex = 0; state.answers = {}; state.selectedOpt = {};
+  state.peopleStep = false; state.staffAmount = undefined; state.lendUnavailable = {}; state.customDateMode = false; state.pendingCancelYen = undefined;
+  state.taxiEtaMinutes = undefined; state.pendingTaxiMinutes = undefined; state.taxiGuestAccepted = undefined;
+  state.historyLogged = false; state.lastAmountYen = undefined; state.lastUnavailableItems = undefined;
+  render();
+}
+
+function currentCategory() { return categories.find(c => c.id === state.catId); }
+
+// "stay" builds its step list dynamically based on which "kind" the guest picked
+function getSteps(cat) {
+  if (cat.id === "taxi") {
+    const base = [cat.steps[0]];
+    if (state.answers.when === "time") {
+      base.push({ type: "date", key: "date",
+        q: { en: "What date would you like the taxi? (MM/DD)", zh: "您希望哪一天用車？（月/日）", ko: "몇 월 며칠에 필요하신가요? (월/일)", ja: "ご希望の日付を入力してください（月／日）" } });
+      base.push({ type: "time", key: "time",
+        q: { en: "What time would you like the taxi?", zh: "您希望幾點搭乘計程車？", ko: "몇 시에 택시를 이용하시겠어요?", ja: "ご希望の時刻を入力してください" } });
+    }
+    base.push(cat.steps[1], cat.steps[2]);
+    return base;
+  }
+  // 締め出しは本質的に緊急なので「緊急ですか？」を聞かずスキップする（choiceステップのonclickでurgent=trueを自動セット）
+  if (cat.id === "trouble") {
+    const base = [cat.steps[0]];
+    if (state.answers.issue !== "lockedout") base.push(cat.steps[1]);
+    base.push(cat.steps[2]);
+    return base;
+  }
+  // 緊急対応：病院手配が必要な場合は絆創膏の質問をスキップする
+  if (cat.id === "emergency") {
+    const base = [cat.steps[0], cat.steps[1]];
+    if (state.answers.needsHospital === "no") base.push(cat.steps[2]);
+    base.push(cat.steps[3]);
+    return base;
+  }
+  if (cat.id !== "stay") return cat.steps;
+  const base = [cat.steps[0]];
+  const kind = state.answers.kind;
+  if (kind === "late") {
+    base.push({ type: "stepper", key: "amount",
+      q: { en: "How many extra hours would you like for late checkout?", zh: "您希望延遲退房幾個小時？", ko: "레이트 체크아웃을 몇 시간 원하시나요?", ja: "レイトチェックアウトは何時間ご希望ですか？" } });
+    base.push({ type: "choice", key: "lateCheckoutPeople",
+      q: { en: "How many guests are staying?", zh: "本次入住共幾位？", ko: "몇 분이 투숙 중이신가요?", ja: "ご宿泊は何名様ですか？" },
+      options: latePeopleOptions });
+    base.push({ type: "room", key: "room" });
+  } else if (kind === "extend") {
+    base.push({ type: "stepper", key: "amount",
+      q: { en: "How many additional nights would you like to stay?", zh: "您想延長住宿幾晚？", ko: "몇 박 더 연장하시겠어요?", ja: "延泊は何泊ご希望ですか？" } });
+    base.push({ type: "peopleChange", key: "peopleMode" });
+    base.push({ type: "room", key: "room" });
+  } else if (kind === "cancel") {
+    base.push({ type: "stepper", key: "amount",
+      q: { en: "How many nights would you like to cancel or reduce?", zh: "您想取消或減少幾晚？", ko: "몇 박을 취소하거나 줄이시겠어요?", ja: "キャンセル・減泊は何泊ですか？" } });
+    base.push({ type: "room", key: "room" });
+  } else if (kind === "roomchange") {
+    base.push({ type: "choice", key: "roomType",
+      q: { en: "Which room type?", zh: "您想更改為哪種房型？", ko: "어떤 객실 타입으로 변경하시겠어요?", ja: "どのお部屋タイプにご変更ですか？" },
+      options: roomTypeOptions });
+    base.push({ type: "room", key: "room" });
+  } else {
+    base.push({ type: "room", key: "room" });
+  }
+  return base;
+}
+
+function nextStep() {
+  const cat = currentCategory();
+  const steps = getSteps(cat);
+  const idx = state.stepIndex + 1;
+  if (idx < steps.length) {
+    state.stepIndex = idx;
+  } else {
+    state.screen = "summary";
+  }
+  render();
+}
+
+function prevStep() {
+  state.customDateMode = false;
+  state.peopleStep = false;
+  const idx = state.stepIndex - 1;
+  if (idx >= 0) {
+    state.stepIndex = idx;
+    render();
+  } else {
+    goHome();
+  }
+}
+
+function showExplain(text, action, placeholder, backTo) {
+  state.screen = "explain";
+  state.explain = { text, action, placeholder, backTo: backTo || "home" };
+  render();
+}
+
+function render() {
+  const screen = document.getElementById("screen");
+  screen.innerHTML = "";
+
+  if (!state.lang) {
+    document.getElementById("langBar").style.display = "none";
+    const q = document.createElement("div");
+    q.className = "question";
+    q.textContent = T.chooseLang.en + " / " + T.chooseLang.zh + " / " + T.chooseLang.ko + " / " + T.chooseLang.ja;
+    screen.appendChild(q);
+    const grid = document.createElement("div");
+    grid.className = "grid";
+    languages.forEach(l => {
+      const b = document.createElement("button");
+      b.className = "opt-btn wide";
+      b.textContent = l.label;
+      b.onclick = () => { state.lang = l.code; render(); };
+      grid.appendChild(b);
+    });
+    screen.appendChild(grid);
+    return;
+  }
+
+  document.getElementById("langBar").style.display = "flex";
+  renderLangBar();
+
+  if (state.screen === "home") {
+    const q = document.createElement("div");
+    q.className = "question";
+    q.textContent = t(T.homeQuestion);
+    screen.appendChild(q);
+
+    const grid = document.createElement("div");
+    grid.className = "grid";
+    categories.forEach(cat => {
+      const b = document.createElement("button");
+      b.className = "opt-btn" + (cat.emergency ? " emergency" : "");
+      b.innerHTML = `<span class="icon">${cat.icon}</span>${t(cat.label)}`;
+      b.onclick = () => startCategory(cat);
+      grid.appendChild(b);
+    });
+    screen.appendChild(grid);
+
+    const histLink = document.createElement("button");
+    histLink.className = "back-btn";
+    histLink.style.marginTop = "24px";
+    histLink.textContent = "📋 リクエスト履歴（スタッフ用）";
+    histLink.onclick = () => { state.screen = "history"; render(); };
+    screen.appendChild(histLink);
+    return;
+  }
+
+  if (state.screen === "faqlist") {
+    const cat = currentCategory();
+    const q = document.createElement("div");
+    q.className = "question";
+    q.textContent = t(cat.label);
+    screen.appendChild(q);
+
+    const grid = document.createElement("div");
+    grid.className = "grid";
+    cat.questions.forEach(item => {
+      const b = document.createElement("button");
+      b.className = "opt-btn wide";
+      b.innerHTML = `<span class="icon">${item.icon}</span>${t(item.label)}`;
+      b.onclick = () => showExplain(item.answer, null, item.placeholder, "faqlist");
+      grid.appendChild(b);
+    });
+    screen.appendChild(grid);
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← " + t(T.backHome);
+    back.onclick = goHome;
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "explain") {
+    const box = document.createElement("div");
+    box.className = "explain-box";
+    box.textContent = t(state.explain.text);
+    if (state.explain.placeholder) {
+      const tag = document.createElement("div");
+      tag.className = "placeholder-tag";
+      tag.textContent = "PLACEHOLDER - 実際の運用内容に差し替えてください";
+      box.appendChild(document.createElement("br"));
+      box.appendChild(tag);
+    }
+    screen.appendChild(box);
+
+    if (state.explain.action) {
+      const actBtn = document.createElement("button");
+      actBtn.className = "primary-btn";
+      actBtn.textContent = t(state.explain.action.label);
+      actBtn.onclick = state.explain.action.onClick;
+      screen.appendChild(actBtn);
+    }
+
+    const closeBtn = document.createElement("button");
+    closeBtn.className = "secondary-btn";
+    closeBtn.textContent = t(T.close);
+    closeBtn.onclick = goHome;
+    screen.appendChild(closeBtn);
+
+    const backTo = state.explain.backTo || "home";
+    const backEl = document.createElement("button");
+    backEl.className = "back-btn";
+    backEl.textContent = "← " + t(T.backStep);
+    backEl.onclick = () => {
+      if (backTo === "flow") { state.screen = "flow"; render(); }
+      else if (backTo === "faqlist") { state.screen = "faqlist"; render(); }
+      else { goHome(); }
+    };
+    screen.appendChild(backEl);
+    return;
+  }
+
+  if (state.screen === "flow") {
+    const cat = currentCategory();
+    const steps = getSteps(cat);
+    const step = steps[state.stepIndex];
+
+    if (step.type === "choice") {
+      const q = document.createElement("div");
+      q.className = "question";
+      q.textContent = t(step.q);
+      screen.appendChild(q);
+
+      const grid = document.createElement("div");
+      grid.className = "grid";
+      step.options.forEach(opt => {
+        const b = document.createElement("button");
+        b.className = "opt-btn";
+        b.innerHTML = `<span class="icon">${opt.icon}</span>${t(opt.label)}`;
+        b.onclick = () => {
+          state.answers[step.key] = opt.v;
+          state.selectedOpt[step.key] = opt;
+
+          // special case: aircon issue -> explain screen with link to borrowing a fan/blanket
+          if (cat.id === "trouble" && opt.v === "aircon") {
+            showExplain(airconExplain, {
+              label: borrowFanLabel,
+              onClick: () => { startCategory(categories.find(c => c.id === "lend")); }
+            }, false, "flow");
+            return;
+          }
+
+          // 締め出しは「緊急ですか？」の質問をスキップするので、代わりに自動でurgent扱いにする
+          if (cat.id === "trouble" && opt.v === "lockedout") {
+            state.answers.urgent = true;
+          }
+
+          // 荷物輸送：「まだ決めていない」なら住所や個数を聞かず、スタッフ確認なしでそのまま案内を出す
+          if (cat.id === "luggage" && opt.v === "notyet") {
+            state.screen = "guestAnswer";
+            state.answer = { text: luggageLaterText };
+            render();
+            return;
+          }
+
+          nextStep();
+        };
+        grid.appendChild(b);
+      });
+      screen.appendChild(grid);
+    }
+
+    else if (step.type === "multiItem") {
+      const q = document.createElement("div");
+      q.className = "question";
+      q.textContent = t(step.q);
+      screen.appendChild(q);
+
+      if (!state.answers[step.key]) {
+        state.answers[step.key] = {};
+        step.options.forEach(o => { state.answers[step.key][o.v] = 0; });
+      }
+      const counts = state.answers[step.key];
+
+      const list = document.createElement("div");
+      list.style.display = "flex";
+      list.style.flexDirection = "column";
+      list.style.gap = "10px";
+
+      step.options.forEach(opt => {
+        const row = document.createElement("div");
+        row.style.display = "flex";
+        row.style.alignItems = "center";
+        row.style.justifyContent = "space-between";
+        row.style.background = "var(--card)";
+        row.style.borderRadius = "16px";
+        row.style.padding = "13px 15px";
+        row.style.boxShadow = "0 3px 10px rgba(0,0,0,0.05)";
+
+        const label = document.createElement("div");
+        label.style.fontSize = "15px";
+        label.style.fontWeight = "bold";
+        label.innerHTML = `<span style="font-size: 29px;margin-right:8px;">${opt.icon}</span>${t(opt.label)}`;
+        row.appendChild(label);
+
+        const stepWrap = document.createElement("div");
+        stepWrap.style.display = "flex";
+        stepWrap.style.alignItems = "center";
+        stepWrap.style.gap = "8px";
+        stepWrap.style.flexShrink = "0";
+
+        const minus = document.createElement("button");
+        minus.textContent = "−";
+        Object.assign(minus.style, { width:"44px", height:"44px", borderRadius:"50%", border:"none", background:"var(--main)", color:"white", fontSize:"23px", cursor:"pointer" });
+        minus.onclick = () => { counts[opt.v] = Math.max(0, counts[opt.v]-1); render(); };
+
+        const val = document.createElement("div");
+        val.style.minWidth = "20px";
+        val.style.textAlign = "center";
+        val.style.fontSize = "17px";
+        val.style.fontWeight = "bold";
+        val.textContent = counts[opt.v];
+
+        const plus = document.createElement("button");
+        plus.textContent = "＋";
+        Object.assign(plus.style, { width:"44px", height:"44px", borderRadius:"50%", border:"none", background:"var(--main)", color:"white", fontSize:"23px", cursor:"pointer" });
+        plus.onclick = () => { counts[opt.v] = counts[opt.v]+1; render(); };
+
+        stepWrap.appendChild(minus); stepWrap.appendChild(val); stepWrap.appendChild(plus);
+        row.appendChild(stepWrap);
+        list.appendChild(row);
+      });
+      screen.appendChild(list);
+
+      const total = Object.values(counts).reduce((a,b) => a+b, 0);
+      const btn = document.createElement("button");
+      btn.className = "primary-btn";
+      btn.textContent = t(T.confirm) + (total > 0 ? ` (${total})` : "");
+      btn.style.opacity = total === 0 ? "0.4" : "1";
+      btn.onclick = () => { if (total > 0) nextStep(); };
+      screen.appendChild(btn);
+    }
+
+    else if (step.type === "stepper") {
+      const q = document.createElement("div");
+      q.className = "question";
+      q.textContent = t(step.q || T.howMany);
+      screen.appendChild(q);
+
+      if (!state.answers[step.key]) state.answers[step.key] = 1;
+      const wrap = document.createElement("div");
+      wrap.className = "stepper";
+      const minus = document.createElement("button");
+      minus.textContent = "−";
+      minus.onclick = () => { state.answers[step.key] = Math.max(1, state.answers[step.key]-1); render(); };
+      const val = document.createElement("div");
+      val.className = "val";
+      val.textContent = state.answers[step.key];
+      const plus = document.createElement("button");
+      plus.textContent = "＋";
+      plus.onclick = () => { state.answers[step.key] = state.answers[step.key]+1; render(); };
+      wrap.appendChild(minus); wrap.appendChild(val); wrap.appendChild(plus);
+      screen.appendChild(wrap);
+
+      const btn = document.createElement("button");
+      btn.className = "primary-btn";
+      btn.textContent = t(T.confirm);
+      btn.onclick = nextStep;
+      screen.appendChild(btn);
+    }
+
+    else if (step.type === "peopleChange") {
+      const q = document.createElement("div");
+      q.className = "question";
+      q.textContent = t(T.peopleQuestion);
+      screen.appendChild(q);
+
+      const grid = document.createElement("div");
+      grid.className = "grid";
+
+      const sameBtn = document.createElement("button");
+      sameBtn.className = "opt-btn wide" + (state.answers.peopleMode === "same" ? "" : "");
+      sameBtn.textContent = t(T.same);
+      sameBtn.onclick = () => { state.answers.peopleMode = "same"; state.peopleStep = false; nextStep(); };
+      grid.appendChild(sameBtn);
+
+      const moreBtn = document.createElement("button");
+      moreBtn.className = "opt-btn";
+      moreBtn.textContent = t(T.more);
+      moreBtn.onclick = () => { state.answers.peopleMode = "more"; state.peopleStep = true; render(); };
+      grid.appendChild(moreBtn);
+
+      const fewerBtn = document.createElement("button");
+      fewerBtn.className = "opt-btn";
+      fewerBtn.textContent = t(T.fewer);
+      fewerBtn.onclick = () => { state.answers.peopleMode = "fewer"; state.peopleStep = true; render(); };
+      grid.appendChild(fewerBtn);
+
+      screen.appendChild(grid);
+
+      if (state.peopleStep) {
+        if (!state.answers.peopleCount) state.answers.peopleCount = 1;
+        const q2 = document.createElement("div");
+        q2.className = "question";
+        q2.style.fontSize = "16px";
+        q2.style.marginTop = "24px";
+        q2.textContent = t(T.howManyPeople);
+        screen.appendChild(q2);
+
+        const wrap = document.createElement("div");
+        wrap.className = "stepper";
+        const minus = document.createElement("button");
+        minus.textContent = "−";
+        minus.onclick = () => { state.answers.peopleCount = Math.max(1, state.answers.peopleCount-1); render(); };
+        const val = document.createElement("div");
+        val.className = "val";
+        val.textContent = state.answers.peopleCount;
+        const plus = document.createElement("button");
+        plus.textContent = "＋";
+        plus.onclick = () => { state.answers.peopleCount = state.answers.peopleCount+1; render(); };
+        wrap.appendChild(minus); wrap.appendChild(val); wrap.appendChild(plus);
+        screen.appendChild(wrap);
+
+        const btn = document.createElement("button");
+        btn.className = "primary-btn";
+        btn.textContent = t(T.confirm);
+        btn.onclick = () => { state.peopleStep = false; nextStep(); };
+        screen.appendChild(btn);
+      }
+    }
+
+    else if (step.type === "urgency") {
+      const q = document.createElement("div");
+      q.className = "question";
+      q.textContent = t(T.isUrgent);
+      screen.appendChild(q);
+
+      const grid = document.createElement("div");
+      grid.className = "grid";
+      const urgentBtn = document.createElement("button");
+      urgentBtn.className = "opt-btn emergency";
+      urgentBtn.textContent = t(T.urgent);
+      urgentBtn.onclick = () => { state.answers[step.key] = true; nextStep(); };
+      const notBtn = document.createElement("button");
+      notBtn.className = "opt-btn";
+      notBtn.textContent = t(T.notUrgent);
+      notBtn.onclick = () => { state.answers[step.key] = false; nextStep(); };
+      grid.appendChild(urgentBtn); grid.appendChild(notBtn);
+      screen.appendChild(grid);
+    }
+
+    else if (step.type === "mapArea") {
+      const q = document.createElement("div");
+      q.className = "question";
+      q.textContent = t(step.q);
+      screen.appendChild(q);
+
+      const hint = document.createElement("div");
+      hint.className = "address-note";
+      hint.textContent = t({
+        en: "Not sure? Just tap the closest big city — an approximate area is fine, we'll confirm the exact address with you separately.",
+        zh: "不確定也沒關係，請點選最近的大城市即可，大概的地區就可以，正確地址我們會再與您確認。",
+        ko: "정확히 모르셔도 괜찮습니다. 가장 가까운 대도시를 선택해 주세요. 대략적인 지역이면 충분하며, 정확한 주소는 따로 확인하겠습니다.",
+        ja: "わからない場合は、一番近い都市をタップしてください。おおよその地域で構いません。正確な住所は後ほど確認いたします。"
+      });
+      screen.appendChild(hint);
+
+      const svgNS = "http://www.w3.org/2000/svg";
+      const svg = document.createElementNS(svgNS, "svg");
+      svg.setAttribute("viewBox", "0 0 300 740");
+      svg.style.width = "100%";
+      svg.style.maxWidth = "340px";
+      svg.style.display = "block";
+      svg.style.margin = "0 auto 16px";
+
+      const pick = (r) => { state.answers[step.key] = r.v; state.selectedOpt[step.key] = r; nextStep(); };
+
+      // フォントサイズはボックス幅に対して自動で縮小し、ラベルがはみ出さないようにする
+      const fitFontSize = (text, boxWidth, baseSize) => {
+        const avgCharW = 0.62; // 太字サンセリフの概算文字幅
+        const maxTextWidth = boxWidth - 16; // 左右余白
+        const estWidth = text.length * baseSize * avgCharW;
+        if (estWidth <= maxTextWidth) return baseSize;
+        return Math.max(9, Math.floor(maxTextWidth / (text.length * avgCharW)));
+      };
+
+      mapRegions.forEach(r => {
+        const rect = document.createElementNS(svgNS, "rect");
+        rect.setAttribute("x", r.x);
+        rect.setAttribute("y", r.y);
+        rect.setAttribute("width", r.w);
+        rect.setAttribute("height", r.h);
+        rect.setAttribute("rx", 14);
+        rect.setAttribute("fill", "var(--main)");
+        rect.setAttribute("fill-opacity", "0.9");
+        rect.setAttribute("stroke", "white");
+        rect.setAttribute("stroke-width", "2.5");
+        rect.style.cursor = "pointer";
+        rect.onclick = () => pick(r);
+        svg.appendChild(rect);
+
+        const lines = r.map.split("\n");
+        const label = document.createElementNS(svgNS, "text");
+        label.setAttribute("x", r.x + r.w/2);
+        label.setAttribute("text-anchor", "middle");
+        label.setAttribute("fill", "white");
+        label.setAttribute("font-weight", "bold");
+        label.style.pointerEvents = "none";
+        const midY = r.y + r.h/2;
+        const fontSizes = lines.map((line, i) => fitFontSize(line, r.w, i === 0 ? 18 : 13));
+        const lineHeight = Math.max(...fontSizes) + 6;
+        const startY = midY - ((lines.length - 1) * lineHeight) / 2 + Math.max(...fontSizes) * 0.32;
+        lines.forEach((line, i) => {
+          const tspan = document.createElementNS(svgNS, "tspan");
+          tspan.setAttribute("x", r.x + r.w/2);
+          tspan.setAttribute("y", startY + i * lineHeight);
+          tspan.setAttribute("font-size", fontSizes[i]);
+          tspan.textContent = line;
+          label.appendChild(tspan);
+        });
+        svg.appendChild(label);
+      });
+      screen.appendChild(svg);
+    }
+
+    else if (step.type === "arrivalChoice") {
+      const earliest = luggageEarliestDate(state.answers.destArea);
+      const relJp = relativeDayLabelJp(earliest.totalDays);
+      const relLabel = relativeDayLabel(earliest.totalDays);
+
+      if (!state.customDateMode) {
+        const q = document.createElement("div");
+        q.className = "question";
+        q.textContent = t({ en: "Earliest possible arrival", zh: "最快送達日期", ko: "가장 빠른 도착일", ja: "最短のお届け可能日" });
+        screen.appendChild(q);
+
+        const box = document.createElement("div");
+        box.className = "explain-box";
+        box.innerHTML = `${earliest.mm}/${earliest.dd}<br><span style="font-size: 21px;">(${relJp} / ${t(relLabel)})</span>`;
+        screen.appendChild(box);
+
+        const cutoffNote = document.createElement("div");
+        cutoffNote.style.textAlign = "center";
+        cutoffNote.style.fontSize = "13px";
+        cutoffNote.style.color = earliest.pastCutoff ? "var(--danger)" : "#888";
+        cutoffNote.style.margin = "-8px 0 16px";
+        cutoffNote.textContent = t(luggageCutoffNoteText(earliest.pastCutoff));
+        screen.appendChild(cutoffNote);
+
+        const okBtn = document.createElement("button");
+        okBtn.className = "primary-btn";
+        okBtn.textContent = t({ en: "This date is fine", zh: "這個日期可以", ko: "이 날짜로 할게요", ja: "この日付で大丈夫です" });
+        okBtn.onclick = () => { state.answers[step.key] = earliest.str; nextStep(); };
+        screen.appendChild(okBtn);
+
+        const otherBtn = document.createElement("button");
+        otherBtn.className = "secondary-btn";
+        otherBtn.textContent = t({ en: "I'd like a different date", zh: "我想指定其他日期", ko: "다른 날짜를 원해요", ja: "別の日付を希望します" });
+        otherBtn.onclick = () => { state.customDateMode = true; render(); };
+        screen.appendChild(otherBtn);
+      } else {
+        const q = document.createElement("div");
+        q.className = "question";
+        q.textContent = t(T.arriveDate);
+        screen.appendChild(q);
+
+        if (state.answers[step.key] === undefined) state.answers[step.key] = "";
+        const raw = state.answers[step.key];
+        const disp = document.createElement("div");
+        disp.className = "room-display";
+        disp.textContent = raw.length >= 3 ? raw.slice(0,2) + "/" + raw.slice(2) : (raw ? raw + "/--" : "--/--");
+        screen.appendChild(disp);
+
+        const note = document.createElement("div");
+        note.style.textAlign = "center";
+        note.style.fontSize = "13px";
+        note.style.color = "#888";
+        note.style.marginBottom = "10px";
+        note.textContent = t(luggageMinDateNoteText(earliest));
+        screen.appendChild(note);
+
+        const pad = document.createElement("div");
+        pad.className = "keypad";
+        ["1","2","3","4","5","6","7","8","9","←","0","OK"].forEach(k => {
+          const b = document.createElement("button");
+          b.textContent = k;
+          b.onclick = () => {
+            if (k === "←") state.answers[step.key] = state.answers[step.key].slice(0,-1);
+            else if (k === "OK") { if (state.answers[step.key].length === 4) { state.customDateMode = false; nextStep(); } return; }
+            else if (state.answers[step.key].length < 4) state.answers[step.key] += k;
+            render();
+          };
+          pad.appendChild(b);
+        });
+        screen.appendChild(pad);
+
+        const back = document.createElement("button");
+        back.className = "back-btn";
+        back.textContent = t(backToEarliestLabel);
+        back.onclick = () => { state.customDateMode = false; render(); };
+        screen.appendChild(back);
+      }
+    }
+
+    else if (step.type === "date") {
+      const q = document.createElement("div");
+      q.className = "question";
+      q.textContent = t(step.q || T.arriveDate);
+      screen.appendChild(q);
+
+      if (state.answers[step.key] === undefined) state.answers[step.key] = "";
+      const raw = state.answers[step.key];
+      const disp = document.createElement("div");
+      disp.className = "room-display";
+      disp.textContent = raw.length >= 3 ? raw.slice(0,2) + "/" + raw.slice(2) : (raw ? raw + "/--" : "--/--");
+      screen.appendChild(disp);
+
+      const pad = document.createElement("div");
+      pad.className = "keypad";
+      ["1","2","3","4","5","6","7","8","9","←","0","OK"].forEach(k => {
+        const b = document.createElement("button");
+        b.textContent = k;
+        b.onclick = () => {
+          if (k === "←") state.answers[step.key] = state.answers[step.key].slice(0,-1);
+          else if (k === "OK") { if (state.answers[step.key].length === 4) nextStep(); return; }
+          else if (state.answers[step.key].length < 4) state.answers[step.key] += k;
+          render();
+        };
+        pad.appendChild(b);
+      });
+      screen.appendChild(pad);
+    }
+
+    else if (step.type === "time") {
+      const q = document.createElement("div");
+      q.className = "question";
+      q.textContent = t(step.q || T.arriveDate);
+      screen.appendChild(q);
+
+      if (state.answers[step.key] === undefined) state.answers[step.key] = "";
+      const raw = state.answers[step.key];
+      const disp = document.createElement("div");
+      disp.className = "room-display";
+      disp.textContent = raw.length >= 3 ? raw.slice(0,2) + ":" + raw.slice(2) : (raw ? raw + ":--" : "--:--");
+      screen.appendChild(disp);
+
+      const pad = document.createElement("div");
+      pad.className = "keypad";
+      ["1","2","3","4","5","6","7","8","9","←","0","OK"].forEach(k => {
+        const b = document.createElement("button");
+        b.textContent = k;
+        b.onclick = () => {
+          if (k === "←") state.answers[step.key] = state.answers[step.key].slice(0,-1);
+          else if (k === "OK") { if (state.answers[step.key].length === 4) nextStep(); return; }
+          else if (state.answers[step.key].length < 4) state.answers[step.key] += k;
+          render();
+        };
+        pad.appendChild(b);
+      });
+      screen.appendChild(pad);
+    }
+
+    else if (step.type === "room") {
+      const q = document.createElement("div");
+      q.className = "question";
+      q.textContent = t(T.roomNumber);
+      screen.appendChild(q);
+
+      if (state.answers[step.key] === undefined) state.answers[step.key] = "";
+      const disp = document.createElement("div");
+      disp.className = "room-display";
+      disp.textContent = state.answers[step.key] || "----";
+      screen.appendChild(disp);
+
+      const pad = document.createElement("div");
+      pad.className = "keypad";
+      ["1","2","3","4","5","6","7","8","9","←","0","OK"].forEach(k => {
+        const b = document.createElement("button");
+        b.textContent = k;
+        b.onclick = () => {
+          if (k === "←") state.answers[step.key] = state.answers[step.key].slice(0,-1);
+          else if (k === "OK") { if (state.answers[step.key]) nextStep(); return; }
+          else if (state.answers[step.key].length < 4) state.answers[step.key] += k;
+          render();
+        };
+        pad.appendChild(b);
+      });
+      screen.appendChild(pad);
+
+      // gentle note for inquiry-type stay requests, and a highlighted note for luggage
+      // (guest must show staff the destination address, since staff writes the shipping label)
+      if (cat.id === "luggage") {
+        const note = document.createElement("div");
+        note.className = "address-note";
+        note.textContent = "📍 " + t(T.luggageAddressNote);
+        screen.appendChild(note);
+      } else if (cat.id === "stay" && ["extend","cancel","roomchange"].includes(state.answers.kind)) {
+        const note = document.createElement("div");
+        note.style.textAlign = "center";
+        note.style.fontSize = "13px";
+        note.style.color = "#888";
+        note.style.marginTop = "-8px";
+        note.textContent = t(T.askStaffNote);
+        screen.appendChild(note);
+      }
+    }
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← " + t(T.backStep);
+    back.onclick = prevStep;
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "summary") {
+    const cat = currentCategory();
+    const steps = getSteps(cat);
+    const choiceStep = steps.find(s => s.type === "choice" || s.type === "itemQty" || s.type === "multiItem");
+    const opt = choiceStep && state.selectedOpt[choiceStep.key];
+    const lines = cat.summary(state.answers, opt, cat);
+    const urgent = state.answers.urgent === true || cat.emergency;
+
+    const box = document.createElement("div");
+    box.className = "summary-box";
+
+    const toStaff = document.createElement("div");
+    toStaff.className = "to-staff";
+    toStaff.textContent = t(T.showStaff);
+    box.appendChild(toStaff);
+
+    if (state.answers.room) {
+      const roomBadge = document.createElement("div");
+      roomBadge.className = "room-badge";
+      roomBadge.innerHTML = `<span class="room-badge-label">${t(T.roomNumber)}</span>${state.answers.room}`;
+      box.appendChild(roomBadge);
+    }
+
+    const divider = document.createElement("div");
+    divider.className = "divider";
+    box.appendChild(divider);
+
+    const title = document.createElement("div");
+    title.className = "jp-title";
+    title.textContent = lines[0];
+    box.appendChild(title);
+
+    const details = document.createElement("div");
+    details.className = "jp-details";
+    lines.slice(1).forEach(line => {
+      const row = document.createElement("div");
+      row.className = "jp-line";
+      row.textContent = line;
+      details.appendChild(row);
+    });
+    box.appendChild(details);
+
+    if (urgent) {
+      const tag = document.createElement("div");
+      tag.className = "urgent-tag";
+      tag.textContent = t(T.urgent);
+      box.appendChild(tag);
+    }
+    screen.appendChild(box);
+
+    const answerBtn = document.createElement("button");
+    answerBtn.className = "primary-btn";
+    answerBtn.textContent = "▶ スタッフの方はこちら：回答を選ぶ";
+    answerBtn.onclick = () => {
+      if (cat.id === "stay" && state.answers.kind === "late") { state.screen = "staffAutoCalc"; render(); return; }
+      if (cat.id === "stay" && ["extend","roomchange"].includes(state.answers.kind)) { state.screen = "staffAvailability"; render(); return; }
+      if (cat.id === "stay" && state.answers.kind === "cancel") { state.screen = "staffNumeric"; render(); return; }
+      if (cat.id === "luggage") { state.screen = "staffLuggageIntake"; render(); return; }
+      if (cat.id === "taxi") { state.screen = "staffTaxiWait"; render(); return; }
+      if (cat.id === "trouble" && state.answers.issue === "lockedout") { state.screen = "staffLockedOut"; render(); return; }
+      if (cat.id === "emergency" && state.answers.needsHospital === "yes") { state.screen = "staffEmergencyHospital"; render(); return; }
+      if (cat.id === "emergency" && state.answers.needsHospital === "no" && state.answers.needsBandaid === "yes") { state.screen = "staffEmergencyBandaid"; render(); return; }
+      if (cat.id === "emergency" && state.answers.needsHospital === "no" && state.answers.needsBandaid === "no") { state.screen = "staffEmergencyNone"; render(); return; }
+      state.screen = "staffAnswer"; render();
+    };
+    screen.appendChild(answerBtn);
+
+    const back = document.createElement("button");
+    back.className = "secondary-btn";
+    back.textContent = t(T.backStep);
+    back.onclick = () => { state.screen = "flow"; state.stepIndex = steps.length - 1; render(); };
+    screen.appendChild(back);
+
+    const home = document.createElement("button");
+    home.className = "back-btn";
+    home.textContent = "← " + t(T.backHome);
+    home.onclick = goHome;
+    screen.appendChild(home);
+    return;
+  }
+
+  if (state.screen === "staffLockedOut") {
+    const q = document.createElement("div");
+    q.className = "question";
+    q.textContent = "スタッフ用：締め出し対応";
+    screen.appendChild(q);
+
+    const box = document.createElement("div");
+    box.className = "explain-box";
+    box.textContent = "マスターキー（またはスペアカード）をお持ちのうえ、スタッフがお部屋まで同伴して解錠してください。ゲストには先に一言お伝えしましょう。";
+    screen.appendChild(box);
+
+    const btn = document.createElement("button");
+    btn.className = "primary-btn";
+    btn.textContent = "この内容でゲストに伝える";
+    btn.onclick = () => {
+      state.screen = "guestAnswer";
+      state.answer = { text: lockedOutAnswerText };
+      render();
+    };
+    screen.appendChild(btn);
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← 戻る";
+    back.onclick = () => { state.screen = "summary"; render(); };
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "staffEmergencyHospital") {
+    const q = document.createElement("div");
+    q.className = "question";
+    q.textContent = "スタッフ用：病院の手配をお願いします";
+    screen.appendChild(q);
+
+    const box = document.createElement("div");
+    box.className = "explain-box";
+    box.textContent = "緊急度に応じて救急要請（119番）またはタクシー等での送迎を手配してください。可能であれば付き添いもご検討ください。";
+    screen.appendChild(box);
+
+    const btn = document.createElement("button");
+    btn.className = "primary-btn";
+    btn.textContent = "この内容でゲストに伝える";
+    btn.onclick = () => {
+      state.screen = "guestAnswer";
+      state.answer = { text: emergencyHospitalText };
+      render();
+    };
+    screen.appendChild(btn);
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← 戻る";
+    back.onclick = () => { state.screen = "summary"; render(); };
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "staffEmergencyBandaid") {
+    const q = document.createElement("div");
+    q.className = "question";
+    q.textContent = "スタッフ用：絆創膏をお持ちください";
+    screen.appendChild(q);
+
+    const box = document.createElement("div");
+    box.className = "explain-box";
+    box.textContent = "絆創膏をお部屋までお届けください。";
+    screen.appendChild(box);
+
+    const btn = document.createElement("button");
+    btn.className = "primary-btn";
+    btn.textContent = "この内容でゲストに伝える";
+    btn.onclick = () => {
+      state.screen = "guestAnswer";
+      state.answer = { text: emergencyBandaidText };
+      render();
+    };
+    screen.appendChild(btn);
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← 戻る";
+    back.onclick = () => { state.screen = "summary"; render(); };
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "staffEmergencyNone") {
+    const q = document.createElement("div");
+    q.className = "question";
+    q.textContent = "スタッフ用：病院・絆創膏いずれも不要とのことです";
+    screen.appendChild(q);
+
+    const box = document.createElement("div");
+    box.className = "explain-box";
+    box.textContent = "念のため、可能であれば直接ご様子をご確認ください。";
+    screen.appendChild(box);
+
+    const btn = document.createElement("button");
+    btn.className = "primary-btn";
+    btn.textContent = "この内容でゲストに伝える";
+    btn.onclick = () => {
+      state.screen = "guestAnswer";
+      state.answer = { text: emergencyNoneText };
+      render();
+    };
+    screen.appendChild(btn);
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← 戻る";
+    back.onclick = () => { state.screen = "summary"; render(); };
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "staffAnswer") {
+    const cat = currentCategory();
+
+    if (cat.id === "lend") {
+      const options = cat.steps.find(s => s.type === "multiItem").options;
+      const requested = options.filter(o => state.answers.items && state.answers.items[o.v] > 0);
+      if (!state.lendUnavailable) state.lendUnavailable = {};
+
+      const q = document.createElement("div");
+      q.className = "question";
+      q.textContent = "スタッフ用：ご用意できない品目があればタップ";
+      screen.appendChild(q);
+
+      const list = document.createElement("div");
+      list.style.display = "flex";
+      list.style.flexDirection = "column";
+      list.style.gap = "10px";
+
+      requested.forEach(opt => {
+        const unavailable = !!state.lendUnavailable[opt.v];
+        const row = document.createElement("button");
+        row.style.display = "flex";
+        row.style.justifyContent = "space-between";
+        row.style.alignItems = "center";
+        row.style.width = "100%";
+        row.style.padding = "15px 17px";
+        row.style.borderRadius = "16px";
+        row.style.border = unavailable ? "2px solid var(--danger)" : "2px solid #eeeae2";
+        row.style.background = unavailable ? "#fdeceb" : "var(--card)";
+        row.style.fontSize = "15px";
+        row.style.fontWeight = "bold";
+        row.style.cursor = "pointer";
+        row.innerHTML = `<span>${opt.icon} ${opt.jp} ×${state.answers.items[opt.v]}</span><span style="color:${unavailable ? 'var(--danger)' : 'var(--main)'}">${unavailable ? "❌ 使用中で不可" : "✅ 用意できます"}</span>`;
+        row.onclick = () => { state.lendUnavailable[opt.v] = !unavailable; render(); };
+        list.appendChild(row);
+      });
+      screen.appendChild(list);
+
+      const sendBtn = document.createElement("button");
+      sendBtn.className = "primary-btn";
+      sendBtn.textContent = "この内容でゲストに伝える";
+      sendBtn.onclick = () => {
+        const available = requested.filter(o => !state.lendUnavailable[o.v]);
+        const unavailable = requested.filter(o => state.lendUnavailable[o.v]);
+        state.lastUnavailableItems = unavailable.map(o => o.v);
+        state.screen = "guestAnswer";
+        state.answer = { text: lendAnswerText(available, unavailable) };
+        render();
+      };
+      screen.appendChild(sendBtn);
+
+      const backLend = document.createElement("button");
+      backLend.className = "back-btn";
+      backLend.textContent = "← 戻る";
+      backLend.onclick = () => { state.screen = "summary"; render(); };
+      screen.appendChild(backLend);
+      return;
+    }
+
+    const list = genericStaffAnswers;
+
+    const q = document.createElement("div");
+    q.className = "question";
+    q.textContent = "スタッフ用：回答を選んでください";
+    screen.appendChild(q);
+
+    const grid = document.createElement("div");
+    grid.className = "grid";
+    list.forEach(ans => {
+      const b = document.createElement("button");
+      b.className = "opt-btn wide";
+      b.innerHTML = `<span class="icon">${ans.icon}</span>${ans.jp}`;
+      b.onclick = () => { state.screen = "guestAnswer"; state.answer = ans; render(); };
+      grid.appendChild(b);
+    });
+    screen.appendChild(grid);
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← 戻る";
+    back.onclick = () => { state.screen = "summary"; render(); };
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "staffAutoCalc") {
+    const hours = state.answers.amount || 0;
+    const people = state.answers.lateCheckoutPeople === "2" ? 2 : 1;
+    const rate = people === 2 ? 1500 : 1000;
+    const yen = hours * rate;
+
+    const q = document.createElement("div");
+    q.className = "question";
+    q.textContent = "スタッフ用：レイトチェックアウト料金（自動計算）";
+    screen.appendChild(q);
+
+    const box = document.createElement("div");
+    box.className = "explain-box";
+    box.innerHTML = `延長 ${hours}時間 × ${rate.toLocaleString()}円（${people === 2 ? "2名以上" : "1名"}）<br><span style="font-size: 39px;">＝ ${yen.toLocaleString()}円</span>`;
+    screen.appendChild(box);
+
+    const rateNote = document.createElement("div");
+    rateNote.className = "placeholder-tag";
+    rateNote.style.display = "block";
+    rateNote.style.textAlign = "center";
+    rateNote.style.marginBottom = "16px";
+    rateNote.textContent = "コンフォートホテル富山駅前の規定：1名1,000円／2名以上1,500円（1時間あたり）";
+    screen.appendChild(rateNote);
+
+    const sendBtn = document.createElement("button");
+    sendBtn.className = "primary-btn";
+    sendBtn.textContent = "この金額でゲストに伝える";
+    sendBtn.onclick = () => { state.lastAmountYen = yen; state.screen = "guestAnswer"; state.answer = { text: lateCheckoutAnswerText(yen) }; render(); };
+    screen.appendChild(sendBtn);
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← 戻る";
+    back.onclick = () => { state.screen = "summary"; render(); };
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "staffAvailability") {
+    const availCat = currentCategory();
+    const kind = state.answers.kind;
+    const q = document.createElement("div");
+    q.className = "question";
+    q.textContent = kind === "extend"
+      ? "スタッフ用：延泊分のお部屋をご用意できますか？"
+      : "スタッフ用：ご希望のお部屋タイプをご用意できますか？";
+    screen.appendChild(q);
+
+    const grid = document.createElement("div");
+    grid.className = "grid";
+
+    const yesBtn = document.createElement("button");
+    yesBtn.className = "opt-btn wide";
+    yesBtn.innerHTML = `<span class="icon">◯</span>ご用意できます（料金を入力）`;
+    yesBtn.onclick = () => { state.screen = "staffNumeric"; render(); };
+    grid.appendChild(yesBtn);
+
+    const noBtn = document.createElement("button");
+    noBtn.className = "opt-btn wide";
+    noBtn.innerHTML = `<span class="icon">✕</span>満室・対応できません`;
+    noBtn.onclick = () => {
+      state.screen = "guestAnswer";
+      state.answer = { text: roomUnavailableText(kind) };
+      render();
+    };
+    grid.appendChild(noBtn);
+
+    screen.appendChild(grid);
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← 戻る";
+    back.onclick = () => { state.screen = "summary"; render(); };
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "staffNumeric") {
+    if (state.staffAmount === undefined) state.staffAmount = "";
+
+    const numericCat = currentCategory();
+    let amountLabel = "金額";
+    if (numericCat.id === "luggage") amountLabel = "輸送費";
+    else if (numericCat.id === "stay" && state.answers.kind === "cancel") amountLabel = "キャンセル料";
+    else if (numericCat.id === "stay" && state.answers.kind === "extend") amountLabel = "延泊料金";
+    else if (numericCat.id === "stay" && state.answers.kind === "roomchange") amountLabel = "部屋タイプ変更の料金";
+
+    const q = document.createElement("div");
+    q.className = "question";
+    q.textContent = `スタッフ用：${amountLabel}を入力してください（円）`;
+    screen.appendChild(q);
+
+    const disp = document.createElement("div");
+    disp.className = "room-display";
+    disp.textContent = state.staffAmount ? Number(state.staffAmount).toLocaleString() + "円" : "----円";
+    screen.appendChild(disp);
+
+    const pad = document.createElement("div");
+    pad.className = "keypad";
+    ["1","2","3","4","5","6","7","8","9","←","0","OK"].forEach(k => {
+      const b = document.createElement("button");
+      b.textContent = k;
+      b.onclick = () => {
+        if (k === "←") state.staffAmount = state.staffAmount.slice(0,-1);
+        else if (k === "OK") {
+          const yen = Number(state.staffAmount || 0);
+          const currentCat = currentCategory();
+          state.staffAmount = undefined;
+          state.lastAmountYen = yen;
+          // キャンセル料が発生する場合は、事前カード決済か現地精算かでゲストへの案内文が変わるため一段階挟む
+          if (currentCat.id === "stay" && state.answers.kind === "cancel" && yen > 0) {
+            state.pendingCancelYen = yen;
+            state.screen = "staffPaymentMethod";
+            render();
+            return;
+          }
+          const textFn = currentCat.id === "luggage" ? luggageFeeAnswerText
+            : state.answers.kind === "cancel" ? cancelFeeAnswerText : feeAnswerText;
+          state.screen = "guestAnswer";
+          state.answer = { text: textFn(yen, state.answers.kind) };
+          render();
+          return;
+        }
+        else if (state.staffAmount.length < 6) state.staffAmount += k;
+        render();
+      };
+      pad.appendChild(b);
+    });
+    screen.appendChild(pad);
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← 戻る";
+    back.onclick = () => {
+      state.staffAmount = undefined;
+      state.screen = ["extend","roomchange"].includes(state.answers.kind) ? "staffAvailability" : "summary";
+      render();
+    };
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "staffPaymentMethod") {
+    const yen = state.pendingCancelYen || 0;
+
+    const q = document.createElement("div");
+    q.className = "question";
+    q.textContent = "スタッフ用：返金方法を選択してください";
+    screen.appendChild(q);
+
+    const box = document.createElement("div");
+    box.className = "explain-box";
+    box.innerHTML = `キャンセル料 ${yen.toLocaleString()}円<br><span style="font-size: 18px;">を差し引いた残額の返金方法</span>`;
+    screen.appendChild(box);
+
+    const grid = document.createElement("div");
+    grid.className = "grid";
+
+    const cardBtn = document.createElement("button");
+    cardBtn.className = "opt-btn wide";
+    cardBtn.innerHTML = `<span class="icon">💳</span>事前カード決済（カードへ返金）`;
+    cardBtn.onclick = () => {
+      state.screen = "guestAnswer";
+      state.answer = { text: cancelFeeAnswerText(yen, "card") };
+      state.pendingCancelYen = undefined;
+      render();
+    };
+    grid.appendChild(cardBtn);
+
+    const onsiteBtn = document.createElement("button");
+    onsiteBtn.className = "opt-btn wide";
+    onsiteBtn.innerHTML = `<span class="icon">💴</span>現地精算（フロントで現金にてお返し）`;
+    onsiteBtn.onclick = () => {
+      state.screen = "guestAnswer";
+      state.answer = { text: cancelFeeAnswerText(yen, "onsite") };
+      state.pendingCancelYen = undefined;
+      render();
+    };
+    grid.appendChild(onsiteBtn);
+
+    screen.appendChild(grid);
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← 戻る";
+    back.onclick = () => { state.screen = "staffNumeric"; state.pendingCancelYen = undefined; render(); };
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "staffTaxiWait") {
+    const q = document.createElement("div");
+    q.className = "question";
+    q.textContent = "スタッフ用：まずゲストに伝えてください";
+    screen.appendChild(q);
+
+    const box = document.createElement("div");
+    box.className = "explain-box";
+    box.textContent = "このあと業者へお電話でご確認ください。先にゲストへ一言伝えましょう。";
+    screen.appendChild(box);
+
+    const btn = document.createElement("button");
+    btn.className = "primary-btn";
+    btn.textContent = "「少々お待ちください」と伝える";
+    btn.onclick = () => { state.screen = "guestTaxiWaitMsg"; render(); };
+    screen.appendChild(btn);
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← 戻る";
+    back.onclick = () => { state.screen = "summary"; render(); };
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "guestTaxiWaitMsg") {
+    const box = document.createElement("div");
+    box.className = "explain-box";
+    box.textContent = t(taxiWaitText);
+    screen.appendChild(box);
+
+    const btn = document.createElement("button");
+    btn.className = "primary-btn";
+    btn.textContent = t(T.close);
+    btn.onclick = () => { state.screen = "staffTaxiEta"; render(); };
+    screen.appendChild(btn);
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← " + t(T.backStep);
+    back.onclick = () => { state.screen = "staffTaxiWait"; render(); };
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "staffTaxiEta") {
+    const q = document.createElement("div");
+    q.className = "question";
+    q.textContent = "スタッフ用：業者への確認結果を選んでください";
+    screen.appendChild(q);
+
+    const grid = document.createElement("div");
+    grid.className = "grid";
+
+    const noBtn = document.createElement("button");
+    noBtn.className = "opt-btn wide";
+    noBtn.innerHTML = `<span class="icon">🙏</span>今は手配できません`;
+    noBtn.onclick = () => {
+      state.screen = "guestAnswer";
+      state.answer = { text: taxiUnavailableText };
+      render();
+    };
+    grid.appendChild(noBtn);
+
+    const yesBtn = document.createElement("button");
+    yesBtn.className = "opt-btn wide";
+    yesBtn.innerHTML = `<span class="icon">🚕</span>手配できます（到着まで分数を入力）`;
+    yesBtn.onclick = () => { state.screen = "staffTaxiMinutes"; render(); };
+    grid.appendChild(yesBtn);
+
+    screen.appendChild(grid);
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← 戻る";
+    back.onclick = () => { state.screen = "staffTaxiWait"; render(); };
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "staffTaxiMinutes") {
+    if (state.taxiEtaMinutes === undefined) state.taxiEtaMinutes = "";
+
+    const q = document.createElement("div");
+    q.className = "question";
+    q.textContent = "スタッフ用：最短到着まで何分か入力してください";
+    screen.appendChild(q);
+
+    const disp = document.createElement("div");
+    disp.className = "room-display";
+    disp.textContent = state.taxiEtaMinutes ? `${state.taxiEtaMinutes}分後` : "--分後";
+    screen.appendChild(disp);
+
+    const pad = document.createElement("div");
+    pad.className = "keypad";
+    ["1","2","3","4","5","6","7","8","9","←","0","OK"].forEach(k => {
+      const b = document.createElement("button");
+      b.textContent = k;
+      b.onclick = () => {
+        if (k === "←") state.taxiEtaMinutes = state.taxiEtaMinutes.slice(0,-1);
+        else if (k === "OK") {
+          if (!state.taxiEtaMinutes) return;
+          state.pendingTaxiMinutes = Number(state.taxiEtaMinutes);
+          state.taxiEtaMinutes = undefined;
+          state.screen = "guestTaxiConfirm";
+          render();
+          return;
+        }
+        else if (state.taxiEtaMinutes.length < 3) state.taxiEtaMinutes += k;
+        render();
+      };
+      pad.appendChild(b);
+    });
+    screen.appendChild(pad);
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← 戻る";
+    back.onclick = () => { state.screen = "staffTaxiEta"; state.taxiEtaMinutes = undefined; render(); };
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "guestTaxiConfirm") {
+    const min = state.pendingTaxiMinutes || 0;
+
+    const box = document.createElement("div");
+    box.className = "explain-box";
+    box.textContent = t(taxiEtaConfirmText(min));
+    screen.appendChild(box);
+
+    const grid = document.createElement("div");
+    grid.className = "grid";
+
+    const yesBtn = document.createElement("button");
+    yesBtn.className = "opt-btn wide";
+    yesBtn.textContent = t(taxiYesLabel);
+    yesBtn.onclick = () => { state.taxiGuestAccepted = true; state.screen = "staffTaxiResult"; render(); };
+    grid.appendChild(yesBtn);
+
+    const noBtn = document.createElement("button");
+    noBtn.className = "opt-btn wide";
+    noBtn.textContent = t(taxiNoLabel);
+    noBtn.onclick = () => { state.taxiGuestAccepted = false; state.screen = "staffTaxiResult"; render(); };
+    grid.appendChild(noBtn);
+
+    screen.appendChild(grid);
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← " + t(T.backStep);
+    back.onclick = () => { state.screen = "staffTaxiMinutes"; render(); };
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "staffTaxiResult") {
+    const q = document.createElement("div");
+    q.className = "question";
+    q.textContent = "スタッフ用：ゲストの回答";
+    screen.appendChild(q);
+
+    const box = document.createElement("div");
+    box.className = "explain-box";
+    box.textContent = state.taxiGuestAccepted
+      ? "ゲストが承諾しました。タクシーの手配をお願いします。"
+      : "ゲストは辞退されました。手配は不要です。";
+    screen.appendChild(box);
+
+    const btn = document.createElement("button");
+    btn.className = "primary-btn";
+    btn.textContent = "← " + t(T.backHome);
+    btn.onclick = () => {
+      state.pendingTaxiMinutes = undefined;
+      state.taxiGuestAccepted = undefined;
+      goHome();
+    };
+    screen.appendChild(btn);
+    return;
+  }
+
+  if (state.screen === "staffLuggageIntake") {
+    const q = document.createElement("div");
+    q.className = "question";
+    q.textContent = "スタッフ用：まず送り先のご住所を伺ってください";
+    screen.appendChild(q);
+
+    const box = document.createElement("div");
+    box.className = "explain-box";
+    box.textContent = "送り状はスタッフが作成します。ゲストへ送り先のご住所を確認してから、発送タイミングを選んでください。";
+    screen.appendChild(box);
+
+    const grid = document.createElement("div");
+    grid.className = "grid";
+
+    const todayBtn = document.createElement("button");
+    todayBtn.className = "opt-btn wide";
+    todayBtn.innerHTML = `<span class="icon">📦</span>本日発送する`;
+    todayBtn.onclick = () => { state.screen = "guestLuggageWait"; render(); };
+    grid.appendChild(todayBtn);
+
+    const laterBtn = document.createElement("button");
+    laterBtn.className = "opt-btn wide";
+    laterBtn.innerHTML = `<span class="icon">🗓️</span>後日発送する`;
+    laterBtn.onclick = () => {
+      state.screen = "guestAnswer";
+      state.answer = { text: luggageLaterText };
+      render();
+    };
+    grid.appendChild(laterBtn);
+
+    screen.appendChild(grid);
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← 戻る";
+    back.onclick = () => { state.screen = "summary"; render(); };
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "guestLuggageWait") {
+    const box = document.createElement("div");
+    box.className = "explain-box";
+    box.textContent = t(luggageWaitText);
+    screen.appendChild(box);
+
+    const btn = document.createElement("button");
+    btn.className = "primary-btn";
+    btn.textContent = t(T.close);
+    btn.onclick = () => { state.screen = "staffNumeric"; render(); };
+    screen.appendChild(btn);
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← " + t(T.backStep);
+    back.onclick = () => { state.screen = "staffLuggageIntake"; render(); };
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "guestAnswer") {
+    // このリクエストが完了した最初の描画時に一度だけ履歴へ記録する（多言語切替の再描画で重複記録しないようguardする）
+    if (!state.historyLogged) {
+      const cat = currentCategory();
+      if (cat) {
+        const steps = getSteps(cat);
+        const choiceStep = steps.find(s => s.type === "choice" || s.type === "itemQty" || s.type === "multiItem");
+        const opt = choiceStep && state.selectedOpt[choiceStep.key];
+        const lines = cat.summary(state.answers, opt, cat);
+        const answerEn = (state.answer && state.answer.text && state.answer.text.en) || "";
+        saveHistoryEntry({
+          time: Date.now(),
+          catId: cat.id,
+          lines,
+          room: state.answers.room || "",
+          urgent: state.answers.urgent === true || !!cat.emergency,
+          answerEn
+        });
+        // スプレッドシートにも「完了」イベントを送る（開始イベントと同じsessionIdで後から突き合わせて離脱率を出せる）
+        const responseSeconds = state.flowStartTime ? Math.round((Date.now() - state.flowStartTime) / 1000) : "";
+        sendAnalyticsEvent("complete", {
+          sessionId: state.sessionId || "",
+          category: cat.id,
+          kind: analyticsKind(cat),
+          room: state.answers.room || "",
+          urgent: state.answers.urgent === true || !!cat.emergency,
+          lang: state.lang || "",
+          amountYen: state.lastAmountYen != null ? state.lastAmountYen : "",
+          responseSeconds,
+          unavailableItems: state.lastUnavailableItems || [],
+          answerEn
+        });
+      }
+      state.historyLogged = true;
+    }
+
+    const box = document.createElement("div");
+    box.className = "explain-box";
+    box.style.whiteSpace = "pre-line";
+    box.textContent = t(state.answer.text);
+    screen.appendChild(box);
+
+    const back = document.createElement("button");
+    back.className = "primary-btn";
+    back.textContent = t(T.backHome);
+    back.onclick = goHome;
+    screen.appendChild(back);
+    return;
+  }
+
+  if (state.screen === "history") {
+    const list = loadHistory();
+
+    const q = document.createElement("div");
+    q.className = "question";
+    q.textContent = `スタッフ用：リクエスト履歴（${list.length}件）`;
+    screen.appendChild(q);
+
+    if (list.length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "explain-box";
+      empty.textContent = "まだ履歴はありません。";
+      screen.appendChild(empty);
+    } else {
+      const wrap = document.createElement("div");
+      wrap.style.display = "flex";
+      wrap.style.flexDirection = "column";
+      wrap.style.gap = "10px";
+      wrap.style.marginBottom = "16px";
+
+      list.slice(0, 100).forEach(entry => {
+        const row = document.createElement("div");
+        row.style.background = "var(--card)";
+        row.style.border = "1px solid #eeeae2";
+        row.style.borderRadius = "14px";
+        row.style.padding = "12px 14px";
+        row.style.textAlign = "left";
+
+        const d = new Date(entry.time);
+        const dateStr = `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
+
+        const top = document.createElement("div");
+        top.style.display = "flex";
+        top.style.justifyContent = "space-between";
+        top.style.fontSize = "12px";
+        top.style.color = "#888";
+        top.innerHTML = `<span>${dateStr}</span><span>${entry.room ? "部屋 " + entry.room : ""}${entry.urgent ? " ・ 🚨至急" : ""}</span>`;
+        row.appendChild(top);
+
+        const title = document.createElement("div");
+        title.style.fontWeight = "bold";
+        title.style.fontSize = "15px";
+        title.style.margin = "4px 0 2px";
+        title.textContent = (entry.lines && entry.lines[0]) || "";
+        row.appendChild(title);
+
+        if (entry.lines && entry.lines.length > 1) {
+          const sub = document.createElement("div");
+          sub.style.fontSize = "13px";
+          sub.style.color = "#555";
+          sub.textContent = entry.lines.slice(1).join(" / ");
+          row.appendChild(sub);
+        }
+
+        if (entry.answerEn) {
+          const ans = document.createElement("div");
+          ans.style.fontSize = "12px";
+          ans.style.color = "var(--main)";
+          ans.style.marginTop = "6px";
+          ans.textContent = "回答: " + entry.answerEn;
+          row.appendChild(ans);
+        }
+
+        wrap.appendChild(row);
+      });
+      screen.appendChild(wrap);
+
+      if (list.length > 100) {
+        const note = document.createElement("div");
+        note.style.textAlign = "center";
+        note.style.fontSize = "12px";
+        note.style.color = "#888";
+        note.style.marginBottom = "16px";
+        note.textContent = `最新100件を表示中（保存件数 ${list.length}件）`;
+        screen.appendChild(note);
+      }
+    }
+
+    const exportBtn = document.createElement("button");
+    exportBtn.className = "secondary-btn";
+    exportBtn.textContent = "CSVで書き出す";
+    exportBtn.disabled = list.length === 0;
+    exportBtn.onclick = () => exportHistoryCsv(list);
+    screen.appendChild(exportBtn);
+
+    const clearBtn = document.createElement("button");
+    clearBtn.className = "secondary-btn";
+    clearBtn.style.color = "var(--danger)";
+    clearBtn.style.borderColor = "var(--danger)";
+    clearBtn.disabled = list.length === 0;
+    clearBtn.textContent = "履歴を消去";
+    clearBtn.onclick = () => {
+      if (confirm("履歴をすべて消去します。よろしいですか？")) {
+        clearHistory();
+        render();
+      }
+    };
+    screen.appendChild(clearBtn);
+
+    const back = document.createElement("button");
+    back.className = "back-btn";
+    back.textContent = "← 戻る";
+    back.onclick = goHome;
+    screen.appendChild(back);
+    return;
+  }
+}
+
+render();
+</script>
+
+</body>
+</html>
